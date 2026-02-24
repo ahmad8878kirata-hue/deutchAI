@@ -8,7 +8,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.urandom(24)
+app.config['SECRET_KEY'] = 'deutschai-secret-key-x7k2p9m4q1r8v5w3'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///deutschai.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -93,7 +93,6 @@ def signup():
 
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         new_user = User(first_name=first_name, last_name=last_name, german_level=german_level, email=email, password=hashed_password)
-        db.session.add(new_user)
         db.session.add(new_user)
         db.session.commit()
         flash('Account created successfully! Please log in.', 'success')
