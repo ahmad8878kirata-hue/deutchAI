@@ -11,6 +11,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'deutschai-secret-key-x7k2p9m4q1r8v5w3'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///deutschai.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['SESSION_COOKIE_SECURE'] = True
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
@@ -145,7 +147,7 @@ def chat_api():
         url="https://openrouter.ai/api/v1/chat/completions",
         headers={
             "Authorization": f"Bearer {api_key}",
-            "HTTP-Referer": "http://localhost:5000", # Using localhost for now
+            "HTTP-Referer": "https://deutchai.tayba.blog",
             "X-Title": "DeutschAI",
         },
         data=json.dumps({
@@ -198,12 +200,12 @@ def practice_api():
     {{
         "score": number,
         "vocab_level": "string (A1-C2)",
-        "analysis_summary": "string in German",
+        "analysis_summary": "string in English",
         "corrections": [
             {{
                 "original": "string",
                 "correction": "string",
-                "explanation": "string in German",
+                "explanation": "string in English",
                 "type": "grammar" | "spelling" | "style"
             }}
         ]
@@ -214,7 +216,7 @@ def practice_api():
         url="https://openrouter.ai/api/v1/chat/completions",
         headers={
             "Authorization": f"Bearer {api_key}",
-            "HTTP-Referer": "http://localhost:5000",
+            "HTTP-Referer": "https://deutchai.tayba.blog",
             "X-Title": "DeutschAI",
         },
         data=json.dumps({
@@ -257,7 +259,7 @@ def call_api():
 
     system_message = {
         "role": "system",
-        "content": f"Du bist Hans, ein freundlicher und ermutigender Deutschlehrer. Der Benutzer hat das Niveau {current_user.german_level}. Antworte immer auf Deutsch, kurz und natürlich, wie in einem echten Gespräch. Korrigiere Fehler sanft."
+        "content": f"You are Hans, a friendly and encouraging German language teacher. The user's level is {current_user.german_level}. The user is practicing speaking German. Always respond in German, keep responses short and natural like a real conversation. If the message seems unclear or broken, try your best to understand the intent and respond helpfully. Gently correct any grammar mistakes."
     }
 
     response = requests.post(

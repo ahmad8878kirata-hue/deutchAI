@@ -1,83 +1,89 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>DeutschAI - Schreibübung</title>
+    <title>DeutschAI - Writing Practice</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200..800&amp;display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200..800&display=swap"
         rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         rel="stylesheet" />
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#ea2a33",
-                        "primary-hover": "#c9242c",
-                        "surface": "#ffffff",
-                        "background": "#f8fafc",
-                        "border-color": "#e2e8f0",
-                        "text-main": "#0f172a",
-                        "text-secondary": "#64748b",
+                        "primary": "#ea2a33", "primary-hover": "#c9242c", "surface": "#ffffff",
+                        "background": "#f8fafc", "border-color": "#e2e8f0",
+                        "text-main": "#0f172a", "text-secondary": "#64748b",
                     },
-                    fontFamily: {
-                        "display": ["Plus Jakarta Sans", "sans-serif"]
-                    },
-                    boxShadow: {
-                        "soft": "0 2px 10px rgba(0, 0, 0, 0.03)",
-                        "card": "0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.1)"
-                    }
+                    fontFamily: { "display": ["Plus Jakarta Sans", "sans-serif"] },
+                    boxShadow: { "soft": "0 2px 10px rgba(0, 0, 0, 0.03)", "card": "0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.1)" }
                 },
             },
         }
     </script>
     <style type="text/tailwindcss">
         @layer utilities {
-            .no-scrollbar::-webkit-scrollbar {
-                display: none;
-            }
-            .no-scrollbar {
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-            }
-        }::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            .no-scrollbar::-webkit-scrollbar { display: none; }
+            .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         }
-        ::-webkit-scrollbar-track {
-            background: transparent; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1; 
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8; 
-        }
-        .error-underline {
-            text-decoration: underline wavy #ea2a33;
-            text-decoration-thickness: 2px;
-            text-underline-offset: 4px;
-        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .error-underline { text-decoration: underline wavy #ea2a33; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+        #mobile-sidebar { transition: transform 0.3s ease; }
     </style>
 </head>
 
 <body class="bg-background text-text-main font-display min-h-screen flex flex-col antialiased">
-    <header class="bg-surface border-b border-border-color sticky top-0 z-40">
-        <div class="max-w-[1600px] mx-auto px-4 lg:px-8 h-18 py-4 flex items-center justify-between">
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden" onclick="closeSidebar()"></div>
+    <!-- Mobile Sidebar -->
+    <div id="mobile-sidebar"
+        class="fixed top-0 left-0 h-full w-72 bg-white z-50 shadow-2xl transform -translate-x-full md:hidden flex flex-col">
+        <div class="flex items-center justify-between px-6 py-5 border-b border-border-color">
+            <a class="text-xl font-extrabold text-primary" href="/">DeutschAI</a>
+            <button onclick="closeSidebar()" class="text-text-secondary hover:text-text-main"><span
+                    class="material-symbols-outlined">close</span></button>
+        </div>
+        <div class="flex items-center gap-3 px-6 py-4 border-b border-border-color">
+            <div
+                class="size-9 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold">
+                {{ user.german_level }}</div>
+            <p class="text-sm font-bold text-text-main">{{ user.german_level }} Level</p>
+        </div>
+        <nav class="flex flex-col gap-1 p-4 flex-1">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
+                href="/dashboard"><span class="material-symbols-outlined text-[20px]">dashboard</span> Dashboard</a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
+                href="/chat"><span class="material-symbols-outlined text-[20px]">forum</span> Chat</a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-primary bg-red-50"
+                href="/practice"><span class="material-symbols-outlined text-[20px]">psychology</span> Practice</a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
+                href="/vocabulary"><span class="material-symbols-outlined text-[20px]">menu_book</span> Vocabulary</a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
+                href="/setting"><span class="material-symbols-outlined text-[20px]">manage_accounts</span> Profile</a>
+        </nav>
+        <a href="/logout"
+            class="flex items-center gap-3 px-8 py-5 border-t border-border-color text-sm font-medium text-red-500"><span
+                class="material-symbols-outlined text-[20px]">logout</span> Log Out</a>
+    </div>
+
+    <header class="bg-surface border-b border-border-color sticky top-0 z-30">
+        <div class="max-w-[1600px] mx-auto px-4 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <a href="/" class="flex items-center gap-3">
-                    <div class="size-8 text-primary">
-                        <svg class="w-full h-full" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                    <div class="size-8 text-primary"><svg class="w-full h-full" fill="none" viewBox="0 0 48 48"
+                            xmlns="http://www.w3.org/2000/svg">
                             <path clip-rule="evenodd"
                                 d="M24 0.757355L47.2426 24L24 47.2426L0.757355 24L24 0.757355ZM21 35.7574V12.2426L9.24264 24L21 35.7574Z"
                                 fill="currentColor" fill-rule="evenodd"></path>
-                        </svg>
-                    </div>
+                        </svg></div>
                     <span class="text-text-main text-lg font-bold tracking-tight">DeutschAI</span>
                 </a>
             </div>
@@ -86,14 +92,13 @@
                     href="/dashboard">Dashboard</a>
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                     href="/chat">Chat</a>
-                <a class="text-primary bg-red-50 px-4 py-2 rounded-lg text-sm font-bold transition-colors"
-                    href="/practice">Übung</a>
+                <a class="text-primary bg-red-50 px-4 py-2 rounded-lg text-sm font-bold" href="/practice">Practice</a>
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                    href="/vocabulary">Wortschatz</a>
+                    href="/vocabulary">Vocabulary</a>
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                    href="/setting">Profil</a>
+                    href="/setting">Profile</a>
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                    href="/logout">Abmelden</a>
+                    href="/logout">Log Out</a>
             </nav>
             <div class="flex items-center gap-3">
                 <div
@@ -101,6 +106,10 @@
                     <span class="size-2 rounded-full bg-primary animate-pulse"></span>
                     {{ user.german_level }}
                 </div>
+                <button onclick="openSidebar()"
+                    class="md:hidden p-2 rounded-lg text-text-secondary hover:text-text-main hover:bg-slate-100">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
             </div>
         </div>
     </header>
@@ -109,16 +118,16 @@
         <section class="flex-1 flex flex-col gap-6 min-w-0">
             <div class="flex flex-col gap-1">
                 <div class="flex items-center gap-2 text-xs font-medium text-text-secondary">
-                    <span>Übung</span>
+                    <span>Practice</span>
                     <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-                    <span>Schreiben</span>
+                    <span>Writing</span>
                 </div>
                 <div class="flex flex-wrap items-baseline justify-between gap-4">
-                    <h1 class="text-2xl lg:text-3xl font-bold tracking-tight text-text-main">Schreibübung</h1>
+                    <h1 class="text-2xl lg:text-3xl font-bold tracking-tight text-text-main">Writing Practice</h1>
                     <div
                         class="flex items-center gap-2 text-sm text-text-secondary bg-white px-3 py-1 rounded-full border border-border-color shadow-sm">
                         <span class="material-symbols-outlined text-[18px] text-primary">timer</span>
-                        <span>Ziel: 5-15 Min.</span>
+                        <span>Goal: 5–15 min</span>
                     </div>
                 </div>
             </div>
@@ -127,14 +136,15 @@
                 <div class="flex flex-col gap-3">
                     <div class="flex items-center gap-2 mb-1">
                         <span
-                            class="bg-primary/10 text-primary text-[11px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Thema</span>
+                            class="bg-primary/10 text-primary text-[11px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Topic</span>
                         <span
-                            class="bg-slate-100 text-slate-600 text-[11px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Grammatik-Fokus</span>
+                            class="bg-slate-100 text-slate-600 text-[11px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Grammar
+                            Focus</span>
                     </div>
-                    <h3 class="text-lg font-semibold text-text-main">Anweisungen</h3>
+                    <h3 class="text-lg font-semibold text-text-main">Instructions</h3>
                     <p class="text-slate-600 leading-relaxed max-w-3xl">
-                        Schreiben Sie einen Text auf Deutsch. DeutschAI wird Ihre Grammatik analysieren,
-                        Vorschläge zur Verbesserung machen und Ihren Wortschatz bewerten.
+                        Write a text in German. DeutschAI will analyze your grammar, suggest improvements, and evaluate
+                        your vocabulary level.
                     </p>
                 </div>
                 <span
@@ -158,23 +168,21 @@
                         </div>
                     </div>
                     <span id="saved-status" class="text-xs text-slate-400 font-medium flex items-center gap-1">
-                        <span class="material-symbols-outlined text-[14px]">cloud_done</span> Gespeichert
+                        <span class="material-symbols-outlined text-[14px]">cloud_done</span> Saved
                     </span>
                 </div>
                 <div class="relative flex-1 p-6 lg:p-8">
                     <textarea id="practice-input"
                         class="w-full h-full bg-transparent border-0 focus:ring-0 p-0 text-lg leading-relaxed text-slate-800 resize-none font-display placeholder:text-slate-300 outline-none min-h-[300px]"
-                        placeholder="Schreiben Sie hier Ihren Text..."></textarea>
+                        placeholder="Write your German text here..."></textarea>
                 </div>
                 <div class="flex items-center justify-between px-6 py-4 border-t border-border-color bg-slate-50/50">
-                    <div id="word-count" class="text-sm font-medium text-text-secondary">
-                        0 Wörter
-                    </div>
+                    <div id="word-count" class="text-sm font-medium text-text-secondary">0 words</div>
                     <div class="flex gap-3">
                         <button id="check-btn" onclick="checkGrammar()"
                             class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-primary hover:bg-primary-hover text-white font-semibold text-sm transition-all shadow-lg shadow-red-500/20 active:translate-y-px">
                             <span id="check-icon" class="material-symbols-outlined text-[20px]">check_circle</span>
-                            <span id="check-text">Grammatik prüfen</span>
+                            <span id="check-text">Check Grammar</span>
                         </button>
                     </div>
                 </div>
@@ -183,11 +191,9 @@
             <div id="results-section" class="hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <h3 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
                     <span class="material-symbols-outlined text-primary">analytics</span>
-                    Detaillierte Analyse
+                    Detailed Analysis
                 </h3>
-                <div id="corrections-container" class="grid gap-4">
-                    <!-- Corrections will be injected here -->
-                </div>
+                <div id="corrections-container" class="grid gap-4"></div>
             </div>
         </section>
 
@@ -196,30 +202,26 @@
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-base font-bold text-text-main flex items-center gap-2">
                         <span class="material-symbols-outlined text-slate-400">monitoring</span>
-                        Übersicht
+                        Overview
                     </h3>
                     <span id="analysis-badge"
-                        class="bg-slate-100 text-slate-600 text-xs font-bold px-2.5 py-1 rounded-full">
-                        Bereit
-                    </span>
+                        class="bg-slate-100 text-slate-600 text-xs font-bold px-2.5 py-1 rounded-full">Ready</span>
                 </div>
                 <div class="grid grid-cols-2 gap-3 mb-5">
                     <div
                         class="p-4 bg-slate-50 rounded-lg border border-slate-100 flex flex-col items-center justify-center text-center">
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Grammatik</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Grammar</p>
                         <p id="grammar-score" class="text-2xl font-black text-slate-300">--</p>
                     </div>
                     <div
                         class="p-4 bg-slate-50 rounded-lg border border-slate-100 flex flex-col items-center justify-center text-center">
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Wortschatz</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Vocabulary</p>
                         <p id="vocab-level" class="text-2xl font-black text-slate-300">--</p>
                     </div>
                 </div>
                 <div id="summary-container"
                     class="bg-slate-50 p-4 rounded-xl border border-slate-100 min-h-[100px] flex items-center justify-center text-center">
-                    <p id="summary-text" class="text-sm text-slate-400 italic">
-                        Schreiben Sie etwas, um eine Analyse zu erhalten!
-                    </p>
+                    <p id="summary-text" class="text-sm text-slate-400 italic">Write something to get analysis!</p>
                 </div>
             </div>
         </aside>
@@ -238,10 +240,19 @@
         const summaryText = document.getElementById('summary-text');
         const analysisBadge = document.getElementById('analysis-badge');
 
+        function openSidebar() {
+            document.getElementById('mobile-sidebar').style.transform = 'translateX(0)';
+            document.getElementById('sidebar-overlay').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeSidebar() {
+            document.getElementById('mobile-sidebar').style.transform = 'translateX(-100%)';
+            document.getElementById('sidebar-overlay').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
         function insertChar(char) {
-            const start = input.selectionStart;
-            const end = input.selectionEnd;
-            const text = input.value;
+            const start = input.selectionStart, end = input.selectionEnd, text = input.value;
             input.value = text.substring(0, start) + char + text.substring(end);
             input.focus();
             input.selectionStart = input.selectionEnd = start + 1;
@@ -250,7 +261,7 @@
 
         function updateStats() {
             const words = input.value.trim().split(/\s+/).filter(w => w.length > 0);
-            wordCount.textContent = `${words.length} Wörter`;
+            wordCount.textContent = `${words.length} word${words.length !== 1 ? 's' : ''}`;
         }
 
         input.addEventListener('input', updateStats);
@@ -258,58 +269,48 @@
         async function checkGrammar() {
             const text = input.value.trim();
             if (!text) return;
-
-            // Loading state
             checkBtn.disabled = true;
             checkBtn.classList.add('opacity-70', 'cursor-not-allowed');
             checkIcon.textContent = 'hourglass_empty';
-            checkText.textContent = 'Analysiere...';
-
+            checkText.textContent = 'Analyzing...';
             try {
                 const response = await fetch('/practice/api', {
                     method: 'POST',
+                    credentials: 'same-origin',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ text })
                 });
-
+                if (response.status === 401) { window.location.href = '/login'; return; }
                 const data = await response.json();
-
                 if (data.choices && data.choices[0] && data.choices[0].message) {
                     const result = JSON.parse(data.choices[0].message.content);
                     displayResults(result);
                 } else {
-                    alert('Fehler bei der Analyse. Bitte versuchen Sie es erneut.');
+                    alert('Analysis failed. Please try again.');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Ein Verbindungsfehler ist aufgetreten.');
+                alert('A connection error occurred. Please try again.');
             } finally {
                 checkBtn.disabled = false;
                 checkBtn.classList.remove('opacity-70', 'cursor-not-allowed');
                 checkIcon.textContent = 'check_circle';
-                checkText.textContent = 'Grammatik prüfen';
+                checkText.textContent = 'Check Grammar';
             }
         }
 
         function displayResults(data) {
-            // Update Stats Sidebar
             grammarScore.textContent = `${data.score}%`;
             grammarScore.className = `text-2xl font-black ${getScoreColor(data.score)}`;
-
             vocabLevel.textContent = data.vocab_level;
             vocabLevel.className = `text-2xl font-black text-primary`;
-
             summaryText.textContent = data.analysis_summary;
             summaryText.classList.remove('italic', 'text-slate-400');
             summaryText.classList.add('text-slate-700', 'text-left');
-
-            analysisBadge.textContent = data.score > 80 ? 'Sehr Gut' : (data.score > 50 ? 'Gut' : 'Verbesserungswürdig');
+            analysisBadge.textContent = data.score > 80 ? 'Excellent' : (data.score > 50 ? 'Good' : 'Needs Work');
             analysisBadge.className = `text-xs font-bold px-2.5 py-1 rounded-full ${getBadgeColor(data.score)}`;
-
-            // Display Corrections and Save to Vocabulary
             resultsSection.classList.remove('hidden');
             correctionsContainer.innerHTML = '';
-
             if (data.corrections.length === 0) {
                 correctionsContainer.innerHTML = `
                     <div class="bg-emerald-50 border border-emerald-100 p-6 rounded-2xl flex items-center gap-4">
@@ -317,42 +318,31 @@
                             <span class="material-symbols-outlined text-3xl">task_alt</span>
                         </div>
                         <div>
-                            <h4 class="font-bold text-emerald-900">Ausgezeichnet!</h4>
-                            <p class="text-emerald-700 text-sm">Ich konnte keine Fehler in Ihrem Text finden. Weiter so!</p>
+                            <h4 class="font-bold text-emerald-900">Excellent!</h4>
+                            <p class="text-emerald-700 text-sm">No errors found in your text. Keep it up!</p>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             } else {
                 data.corrections.forEach(cor => {
-                    // Save word to vocabulary API
                     saveToVocabulary(cor);
-
                     const card = document.createElement('div');
                     card.className = "bg-white border border-slate-100 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3";
-
                     const typeColor = cor.type === 'grammar' ? 'text-blue-500 bg-blue-50' : (cor.type === 'spelling' ? 'text-primary bg-red-50' : 'text-amber-500 bg-amber-50');
-
                     card.innerHTML = `
                         <div class="flex items-center justify-between">
                             <span class="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded ${typeColor}">${cor.type}</span>
                         </div>
                         <div class="flex flex-col gap-2">
-                            <div class="flex items-center gap-2 text-slate-400 line-through text-sm">
-                                <span>${cor.original}</span>
-                            </div>
+                            <div class="flex items-center gap-2 text-slate-400 line-through text-sm"><span>${cor.original}</span></div>
                             <div class="flex items-center gap-2 text-slate-900 font-bold text-lg">
                                 <span class="material-symbols-outlined text-emerald-500">arrow_forward</span>
                                 <span>${cor.correction}</span>
                             </div>
                         </div>
-                        <p class="text-slate-600 text-sm italic border-l-2 border-slate-100 pl-3 mt-1 leading-relaxed">
-                            ${cor.explanation}
-                        </p>
-                    `;
+                        <p class="text-slate-600 text-sm italic border-l-2 border-slate-100 pl-3 mt-1 leading-relaxed">${cor.explanation}</p>`;
                     correctionsContainer.appendChild(card);
                 });
             }
-
             resultsSection.scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -360,16 +350,11 @@
             try {
                 await fetch('/vocabulary/api/add', {
                     method: 'POST',
+                    credentials: 'same-origin',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        word: cor.original,
-                        correction: cor.correction,
-                        explanation: cor.explanation
-                    })
+                    body: JSON.stringify({ word: cor.original, correction: cor.correction, explanation: cor.explanation })
                 });
-            } catch (err) {
-                console.error("Failed to save vocabulary:", err);
-            }
+            } catch (err) { console.error("Failed to save vocabulary:", err); }
         }
 
         function getScoreColor(score) {
@@ -377,7 +362,6 @@
             if (score > 50) return 'text-amber-500';
             return 'text-primary';
         }
-
         function getBadgeColor(score) {
             if (score > 80) return 'bg-emerald-100 text-emerald-700';
             if (score > 50) return 'bg-amber-100 text-amber-700';

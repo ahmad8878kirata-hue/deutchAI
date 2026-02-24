@@ -8,26 +8,20 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         rel="stylesheet" />
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#ea2a33", // Keeping branding
-                        "primary-hover": "#d6252d",
-                        "background-light": "#fcfcfc", // Slightly cleaner white
-                        "surface-light": "#ffffff",
-                        "border-light": "#e2e8f0", // Standard slate-200
-                        "subtle-text": "#64748b", // slate-500
+                        "primary": "#ea2a33", "primary-hover": "#d6252d",
+                        "background-light": "#fcfcfc", "surface-light": "#ffffff",
+                        "border-light": "#e2e8f0", "subtle-text": "#64748b",
                     },
-                    fontFamily: {
-                        "display": ["Plus Jakarta Sans", "sans-serif"]
-                    },
+                    fontFamily: { "display": ["Plus Jakarta Sans", "sans-serif"] },
                     borderRadius: { "DEFAULT": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
                 },
             },
@@ -50,72 +44,110 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background-color: #94a3b8;
         }
+
+        #mobile-sidebar {
+            transition: transform 0.3s ease;
+        }
     </style>
 </head>
 
 <body
     class="bg-slate-50 font-display text-slate-900 h-screen flex flex-col selection:bg-primary/20 selection:text-primary overflow-hidden">
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="closeSidebar()"></div>
+    <!-- Mobile Sidebar -->
+    <div id="mobile-sidebar"
+        class="fixed top-0 left-0 h-full w-72 bg-white z-50 shadow-2xl transform -translate-x-full flex flex-col">
+        <div class="flex items-center justify-between px-6 py-5 border-b border-border-light">
+            <a class="text-xl font-extrabold text-primary" href="/">DeutschAI</a>
+            <button onclick="closeSidebar()" class="text-subtle-text hover:text-slate-900"><span
+                    class="material-symbols-outlined">close</span></button>
+        </div>
+        <div class="flex items-center gap-3 px-6 py-4 border-b border-border-light">
+            <div
+                class="size-9 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold">
+                {{ user.german_level }}</div>
+            <p class="text-sm font-bold text-slate-900">{{ user.german_level }} Level</p>
+        </div>
+        <nav class="flex flex-col gap-1 p-4 flex-1">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-subtle-text hover:text-slate-900 hover:bg-slate-50"
+                href="/dashboard"><span class="material-symbols-outlined text-[20px]">dashboard</span> Dashboard</a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-primary bg-red-50"
+                href="/chat"><span class="material-symbols-outlined text-[20px]">forum</span> Chat</a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-subtle-text hover:text-slate-900 hover:bg-slate-50"
+                href="/practice"><span class="material-symbols-outlined text-[20px]">psychology</span> Practice</a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-subtle-text hover:text-slate-900 hover:bg-slate-50"
+                href="/vocabulary"><span class="material-symbols-outlined text-[20px]">menu_book</span> Vocabulary</a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-subtle-text hover:text-slate-900 hover:bg-slate-50"
+                href="/setting"><span class="material-symbols-outlined text-[20px]">manage_accounts</span> Profile</a>
+        </nav>
+        <a href="/logout"
+            class="flex items-center gap-3 px-8 py-5 border-t border-border-light text-sm font-medium text-red-500"><span
+                class="material-symbols-outlined text-[20px]">logout</span> Log Out</a>
+    </div>
+
     <!-- Topic Selection Modal -->
     <div id="topic-modal"
         class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all scale-100">
             <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-white sticky top-0">
-                <h3 class="text-xl font-bold text-slate-900">Wählen Sie ein Gesprächsthema</h3>
+                <h3 class="text-xl font-bold text-slate-900">Choose a Conversation Topic</h3>
                 <div class="size-10 bg-red-50 rounded-full flex items-center justify-center text-primary">
                     <span class="material-symbols-outlined">lightbulb</span>
                 </div>
             </div>
             <div class="p-4 flex flex-col gap-2 max-h-[60vh] overflow-y-auto custom-scrollbar">
-                <button onclick="selectTopic('Im Restaurant bestellen', 'restaurant')"
+                <button onclick="selectTopic('At the Restaurant', 'restaurant')"
                     class="topic-btn flex items-center justify-between p-4 rounded-xl border border-slate-100 hover:border-primary hover:bg-red-50/50 transition-all text-left group">
                     <div class="flex items-center gap-4">
                         <div class="p-2.5 bg-slate-50 rounded-lg group-hover:bg-white transition-colors">
                             <span
                                 class="material-symbols-outlined text-slate-400 group-hover:text-primary">restaurant</span>
                         </div>
-                        <span class="font-bold text-slate-800 group-hover:text-primary">Im Restaurant bestellen</span>
+                        <span class="font-bold text-slate-800 group-hover:text-primary">At the Restaurant</span>
                     </div>
                     <span class="material-symbols-outlined text-slate-300 group-hover:text-primary">chevron_right</span>
                 </button>
-                <button onclick="selectTopic('Im Hotel einchecken', 'hotel')"
+                <button onclick="selectTopic('Hotel Check-in', 'hotel')"
                     class="topic-btn flex items-center justify-between p-4 rounded-xl border border-slate-100 hover:border-primary hover:bg-red-50/50 transition-all text-left group">
                     <div class="flex items-center gap-4">
                         <div class="p-2.5 bg-slate-50 rounded-lg group-hover:bg-white transition-colors">
                             <span class="material-symbols-outlined text-slate-400 group-hover:text-primary">hotel</span>
                         </div>
-                        <span class="font-bold text-slate-800 group-hover:text-primary">Im Hotel einchecken</span>
+                        <span class="font-bold text-slate-800 group-hover:text-primary">Hotel Check-in</span>
                     </div>
                     <span class="material-symbols-outlined text-slate-300 group-hover:text-primary">chevron_right</span>
                 </button>
-                <button onclick="selectTopic('Beim Arzt', 'medical_services')"
+                <button onclick="selectTopic('At the Doctor', 'medical_services')"
                     class="topic-btn flex items-center justify-between p-4 rounded-xl border border-slate-100 hover:border-primary hover:bg-red-50/50 transition-all text-left group">
                     <div class="flex items-center gap-4">
                         <div class="p-2.5 bg-slate-50 rounded-lg group-hover:bg-white transition-colors">
                             <span
                                 class="material-symbols-outlined text-slate-400 group-hover:text-primary">medical_services</span>
                         </div>
-                        <span class="font-bold text-slate-800 group-hover:text-primary">Beim Arzt</span>
+                        <span class="font-bold text-slate-800 group-hover:text-primary">At the Doctor</span>
                     </div>
                     <span class="material-symbols-outlined text-slate-300 group-hover:text-primary">chevron_right</span>
                 </button>
-                <button onclick="selectTopic('Vorstellungsgespräch', 'work')"
+                <button onclick="selectTopic('Job Interview', 'work')"
                     class="topic-btn flex items-center justify-between p-4 rounded-xl border border-slate-100 hover:border-primary hover:bg-red-50/50 transition-all text-left group">
                     <div class="flex items-center gap-4">
                         <div class="p-2.5 bg-slate-50 rounded-lg group-hover:bg-white transition-colors">
                             <span class="material-symbols-outlined text-slate-400 group-hover:text-primary">work</span>
                         </div>
-                        <span class="font-bold text-slate-800 group-hover:text-primary">Vorstellungsgespräch</span>
+                        <span class="font-bold text-slate-800 group-hover:text-primary">Job Interview</span>
                     </div>
                     <span class="material-symbols-outlined text-slate-300 group-hover:text-primary">chevron_right</span>
                 </button>
-                <button onclick="selectTopic('Leben in Berlin', 'location_city')"
+                <button onclick="selectTopic('Living in Berlin', 'location_city')"
                     class="topic-btn flex items-center justify-between p-4 rounded-xl border border-slate-100 hover:border-primary hover:bg-red-50/50 transition-all text-left group">
                     <div class="flex items-center gap-4">
                         <div class="p-2.5 bg-slate-50 rounded-lg group-hover:bg-white transition-colors">
                             <span
                                 class="material-symbols-outlined text-slate-400 group-hover:text-primary">location_city</span>
                         </div>
-                        <span class="font-bold text-slate-800 group-hover:text-primary">Leben in Berlin</span>
+                        <span class="font-bold text-slate-800 group-hover:text-primary">Living in Berlin</span>
                     </div>
                     <span class="material-symbols-outlined text-slate-300 group-hover:text-primary">chevron_right</span>
                 </button>
@@ -123,15 +155,16 @@
             <div class="p-6 bg-slate-50/50 border-t border-slate-100">
                 <button id="start-chat-btn" disabled
                     class="w-full bg-slate-200 text-slate-500 font-bold py-4 rounded-xl cursor-not-allowed transition-all flex items-center justify-center gap-2 group shadow-lg">
-                    <span>Hier chatten</span>
+                    <span>Start Chatting</span>
                     <span
                         class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
                 </button>
             </div>
         </div>
     </div>
-    <header class="bg-white border-b border-border-light z-50 shrink-0">
-        <div class="max-w-[1200px] mx-auto px-4 md:px-8 h-18 py-4 flex items-center justify-between">
+
+    <header class="bg-white border-b border-border-light z-30 shrink-0">
+        <div class="max-w-[1200px] mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center gap-10">
                 <a class="text-2xl font-extrabold text-primary tracking-tight" href="/">DeutschAI</a>
                 <nav class="hidden md:flex items-center gap-6">
@@ -139,21 +172,25 @@
                         href="/dashboard">Dashboard</a>
                     <a class="text-sm font-bold text-slate-900 px-2 py-1" href="/chat">Chat</a>
                     <a class="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors px-2 py-1"
-                        href="/practice">Übung</a>
+                        href="/practice">Practice</a>
                     <a class="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors px-2 py-1"
-                        href="/vocabulary">Wortschatz</a>
+                        href="/vocabulary">Vocabulary</a>
                     <a class="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors px-2 py-1"
-                        href="/setting">Profil</a>
+                        href="/setting">Profile</a>
                     <a class="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors px-2 py-1"
-                        href="/logout">Abmelden</a>
+                        href="/logout">Log Out</a>
                 </nav>
             </div>
-            <div class="flex items-center">
+            <div class="flex items-center gap-3">
                 <span
-                    class="bg-primary/5 border border-primary/10 text-primary text-xs font-bold px-4 py-2 rounded-full flex items-center gap-2">
+                    class="hidden sm:flex bg-primary/5 border border-primary/10 text-primary text-xs font-bold px-4 py-2 rounded-full items-center gap-2">
                     <span class="size-2 rounded-full bg-primary"></span>
                     {{ user.german_level }}
                 </span>
+                <button onclick="openSidebar()"
+                    class="md:hidden p-2 rounded-lg text-subtle-text hover:text-slate-900 hover:bg-slate-100">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
             </div>
         </div>
     </header>
@@ -168,14 +205,14 @@
                         <span id="topic-icon"
                             class="material-symbols-outlined text-primary text-xl leading-none block">forum</span>
                     </div>
-                    <span id="display-topic">Thema wählen</span>
+                    <span id="display-topic">Choose a topic</span>
                 </h2>
-                <p class="text-subtle-text text-xs font-normal ml-11">Niveau {{ user.german_level }} • Sprechübung
+                <p class="text-subtle-text text-xs font-normal ml-11">Level {{ user.german_level }} • Speaking Practice
                 </p>
             </div>
             <div class="hidden sm:flex flex-col items-end w-48 gap-1.5">
                 <div class="flex justify-between w-full text-xs font-medium text-slate-500">
-                    <span>Sitzungsfortschritt</span>
+                    <span>Session Progress</span>
                     <span id="progress-percentage" class="text-slate-900">0%</span>
                 </div>
                 <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
@@ -191,17 +228,16 @@
                 <div class="bg-primary/10 p-6 rounded-full animate-pulse">
                     <span class="material-symbols-outlined text-primary text-5xl">forum</span>
                 </div>
-                <h3 class="text-xl font-bold text-slate-900">Starte ein Gespräch mit Hans</h3>
-                <p class="text-subtle-text max-w-sm">Übe deine Deutschkenntnisse auf natürliche Weise. Hans ist
-                    bereit, mit dir über jedes Thema zu plaudern!</p>
+                <h3 class="text-xl font-bold text-slate-900">Start a conversation with Hans</h3>
+                <p class="text-subtle-text max-w-sm">Practice your German naturally. Hans is ready to chat about any
+                    topic with you!</p>
                 <div class="flex flex-wrap justify-center gap-2 mt-2">
                     <button
                         class="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold hover:border-primary hover:text-primary hover:shadow-sm transition-all flex items-center gap-2"
-                        onclick="setQuickMessage('Hallo Hans, wie geht es dir?')">Hallo sagen
-                        👋</button>
+                        onclick="setQuickMessage('Hallo Hans, wie geht es dir?')">Say hello 👋</button>
                     <button
                         class="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold hover:border-primary hover:text-primary hover:shadow-sm transition-all flex items-center gap-2"
-                        onclick="setQuickMessage('Ich möchte über meine Hobbies sprechen.')">Über Hobbies sprechen
+                        onclick="setQuickMessage('Ich möchte über meine Hobbies sprechen.')">Talk about hobbies
                         🎨</button>
                 </div>
             </div>
@@ -213,27 +249,28 @@
                     class="relative bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-slate-100 flex items-center p-2 pr-2 gap-2 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary/30 transition-all">
                     <button id="mic-btn"
                         class="p-3 text-slate-400 hover:text-primary transition-colors rounded-xl hover:bg-slate-50 relative group"
-                        title="Spracheingabe (Deutsch)">
+                        title="Voice input (German)">
                         <span id="mic-icon" class="material-symbols-outlined">mic</span>
                         <span id="mic-pulse"
                             class="absolute inset-0 rounded-xl bg-primary/20 scale-0 group-hover:scale-100 transition-transform"></span>
                     </button>
                     <input id="chat-input"
                         class="flex-1 bg-transparent border-none text-slate-800 placeholder-slate-400 focus:ring-0 text-base py-3"
-                        placeholder="Sprechen oder schreiben Sie auf Deutsch..." type="text" />
+                        placeholder="Speak or type in German..." type="text" />
                     <div class="flex items-center gap-1">
                         <button id="send-btn"
                             class="bg-primary hover:bg-primary-hover text-white rounded-xl py-2.5 px-5 font-medium transition-colors flex items-center gap-2 shadow-lg shadow-primary/20">
-                            <span>Senden</span>
+                            <span>Send</span>
                             <span class="material-symbols-outlined text-[18px]">send</span>
                         </button>
                     </div>
                 </div>
-                <p class="text-center text-[11px] text-slate-400 mt-3 font-medium">Klicke auf das Mikrofon zum Sprechen
-                    • KI kann Fehler machen</p>
+                <p class="text-center text-[11px] text-slate-400 mt-3 font-medium">Click the mic to speak • AI can make
+                    mistakes</p>
             </div>
         </div>
     </main>
+
     <script>
         const chatContainer = document.getElementById('chat-container');
         const welcomeMessage = document.getElementById('welcome-message');
@@ -247,256 +284,159 @@
         const micIcon = document.getElementById('mic-icon');
         const micPulse = document.getElementById('mic-pulse');
 
-        let selectedTopic = "";
-        let selectedIcon = "";
-
-        // Voice Recognition Setup
-        let isRecording = false;
+        let selectedTopic = "", selectedIcon = "", isRecording = false;
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition;
 
+        function openSidebar() {
+            document.getElementById('mobile-sidebar').style.transform = 'translateX(0)';
+            document.getElementById('sidebar-overlay').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeSidebar() {
+            document.getElementById('mobile-sidebar').style.transform = 'translateX(-100%)';
+            document.getElementById('sidebar-overlay').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
         if (SpeechRecognition) {
             recognition = new SpeechRecognition();
-            recognition.lang = 'de-DE'; // German
+            recognition.lang = 'de-DE';
             recognition.continuous = false;
             recognition.interimResults = false;
-
             recognition.onstart = () => {
                 isRecording = true;
-                micIcon.textContent = 'mic';
                 micIcon.classList.add('text-primary');
                 micPulse.classList.add('animate-ping', 'scale-100');
-                chatInput.placeholder = "Ich höre zu (Deutsch)...";
+                chatInput.placeholder = "Listening (German)...";
             };
-
             recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript;
-                chatInput.value = transcript;
+                chatInput.value = event.results[0][0].transcript;
                 chatInput.focus();
             };
+            recognition.onerror = (event) => { console.error('Speech error:', event.error); stopRecording(); };
+            recognition.onend = () => stopRecording();
+        } else { micBtn.style.display = 'none'; }
 
-            recognition.onerror = (event) => {
-                console.error('Speech recognition error:', event.error);
-                stopRecording();
-            };
-
-            recognition.onend = () => {
-                stopRecording();
-            };
-        } else {
-            micBtn.style.display = 'none';
-        }
-
-        function toggleRecording() {
-            if (isRecording) {
-                recognition.stop();
-            } else {
-                recognition.start();
-            }
-        }
-
+        function toggleRecording() { isRecording ? recognition.stop() : recognition.start(); }
         function stopRecording() {
             isRecording = false;
-            micIcon.textContent = 'mic';
             micIcon.classList.remove('text-primary');
             micPulse.classList.remove('animate-ping', 'scale-100');
-            chatInput.placeholder = "Sprechen oder schreiben Sie auf Deutsch...";
+            chatInput.placeholder = "Speak or type in German...";
         }
-
         micBtn.addEventListener('click', toggleRecording);
 
         function selectTopic(topic, icon) {
-            selectedTopic = topic;
-            selectedIcon = icon;
-
-            // Highlight selected button
+            selectedTopic = topic; selectedIcon = icon;
             document.querySelectorAll('.topic-btn').forEach(btn => {
                 btn.classList.remove('border-primary', 'bg-red-50/50');
-                if (btn.innerText.includes(topic)) {
-                    btn.classList.add('border-primary', 'bg-red-50/50');
-                }
+                if (btn.innerText.includes(topic)) btn.classList.add('border-primary', 'bg-red-50/50');
             });
-
-            // Enable start button
             startChatBtn.disabled = false;
             startChatBtn.classList.remove('bg-slate-200', 'text-slate-500', 'cursor-not-allowed');
             startChatBtn.classList.add('bg-primary', 'text-white', 'hover:bg-primary-hover');
         }
 
-        startChatBtn.addEventListener('click', () => {
-            if (selectedTopic) {
-                startChat();
-            }
-        });
+        startChatBtn.addEventListener('click', () => { if (selectedTopic) startChat(); });
 
         async function startChat() {
-            // Hide modal
             topicModal.classList.add('opacity-0', 'pointer-events-none');
             setTimeout(() => topicModal.remove(), 300);
-
-            // Update header
             displayTopic.textContent = selectedTopic;
             topicIcon.textContent = selectedIcon;
-
-            // Initial positive response + trigger AI start
-            addMessage(`Hervorragende Wahl! Lass uns über "${selectedTopic}" sprechen. Ich bereite Hans für dich vor...`, 'assistant');
-
-            // Add a temporary loading state for the real greeting
-            const loadingIndicatorId = 'loading-initial';
-            const loadingDiv = document.createElement('div');
-            loadingDiv.className = 'flex justify-start items-center gap-2 text-subtle-text';
-            loadingDiv.id = loadingIndicatorId;
-            loadingDiv.innerHTML = `
-                <div class="bg-white border border-slate-100 rounded-2xl px-4 py-2 rounded-tl-none shadow-sm flex items-center gap-2">
-                    <div class="flex gap-1">
-                        <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></div>
-                        <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:0.2s]"></div>
-                        <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:0.4s]"></div>
-                    </div>
-                    <span class="text-xs font-semibold text-slate-500">Hans bereitet sich vor...</span>
-                </div>
-            `;
+            addMessage(`Great choice! Let's talk about "${selectedTopic}". Getting Hans ready for you...`, 'assistant');
+            const loadingId = 'loading-initial';
+            const loadingDiv = createLoadingIndicator(loadingId, 'Hans is preparing...');
             chatContainer.appendChild(loadingDiv);
-
             try {
                 const response = await fetch('/chat/api', {
                     method: 'POST',
+                    credentials: 'same-origin',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        message: `Ich möchte ein Gespräch über "${selectedTopic}" beginnen. Bitte begrüße mich auf Deutsch und starte unsere Übungseinheit.`,
-                        context: selectedTopic
-                    }),
+                    body: JSON.stringify({ message: `Let's have a conversation about "${selectedTopic}". Start our German practice session.`, context: selectedTopic }),
                 });
-
+                if (response.status === 401) { window.location.href = '/login'; return; }
                 const data = await response.json();
-                document.getElementById(loadingIndicatorId).remove();
-
-                if (data.choices && data.choices[0] && data.choices[0].message) {
-                    addMessage(data.choices[0].message.content, 'assistant');
-                } else {
-                    addMessage("Entschuldigung, ich konnte die Konversation nicht starten.", 'assistant');
-                }
+                document.getElementById(loadingId)?.remove();
+                addMessage(data.choices?.[0]?.message?.content || "Sorry, I couldn't start the conversation.", 'assistant');
             } catch (error) {
-                console.error('Error:', error);
-                if (document.getElementById(loadingIndicatorId)) {
-                    document.getElementById(loadingIndicatorId).remove();
-                }
-                addMessage("Entschuldigung, es gab einen Fehler.", 'assistant');
+                document.getElementById(loadingId)?.remove();
+                addMessage("Sorry, there was an error.", 'assistant');
             }
         }
 
-        function setQuickMessage(msg) {
-            chatInput.value = msg;
-            chatInput.focus();
+        function createLoadingIndicator(id, label) {
+            const div = document.createElement('div');
+            div.className = 'flex justify-start items-center gap-2 text-subtle-text';
+            div.id = id;
+            div.innerHTML = `<div class="bg-white border border-slate-100 rounded-2xl px-4 py-2 rounded-tl-none shadow-sm flex items-center gap-2">
+                <div class="flex gap-1">
+                    <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></div>
+                    <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:0.2s]"></div>
+                    <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:0.4s]"></div>
+                </div>
+                <span class="text-xs font-semibold text-slate-500">${label}</span></div>`;
+            return div;
         }
+
+        function setQuickMessage(msg) { chatInput.value = msg; chatInput.focus(); }
 
         function addMessage(text, role) {
-            if (welcomeMessage) {
-                welcomeMessage.remove();
-            }
-
+            if (welcomeMessage) welcomeMessage.remove();
             const messageDiv = document.createElement('div');
             messageDiv.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2 duration-300`;
-
             const innerDiv = document.createElement('div');
-            innerDiv.className = `max-w-[80%] rounded-2xl px-4 py-3 ${role === 'user'
-                ? 'bg-primary text-white rounded-tr-none shadow-md shadow-primary/10'
-                : 'bg-white text-slate-800 border border-slate-100 rounded-tl-none shadow-sm'
-                }`;
-
+            innerDiv.className = `max-w-[80%] rounded-2xl px-4 py-3 ${role === 'user' ? 'bg-primary text-white rounded-tr-none shadow-md shadow-primary/10' : 'bg-white text-slate-800 border border-slate-100 rounded-tl-none shadow-sm'}`;
             const textP = document.createElement('p');
             textP.className = 'text-sm leading-relaxed';
             textP.textContent = text;
-
             innerDiv.appendChild(textP);
             messageDiv.appendChild(innerDiv);
             chatContainer.appendChild(messageDiv);
-
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
         async function sendMessage() {
             const message = chatInput.value.trim();
             if (!message) return;
-
             addMessage(message, 'user');
             chatInput.value = '';
-
-            // Add loading indicator
-            const loadingIndicatorId = 'loading-' + Date.now();
-            const loadingDiv = document.createElement('div');
-            loadingDiv.className = 'flex justify-start items-center gap-2 text-subtle-text';
-            loadingDiv.id = loadingIndicatorId;
-            loadingDiv.innerHTML = `
-                <div class="bg-white border border-slate-100 rounded-2xl px-4 py-2 rounded-tl-none shadow-sm flex items-center gap-2">
-                    <div class="flex gap-1">
-                        <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></div>
-                        <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:0.2s]"></div>
-                        <div class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:0.4s]"></div>
-                    </div>
-                    <span class="text-xs font-semibold text-slate-500">Hans schreibt...</span>
-                </div>
-            `;
+            const loadingId = 'loading-' + Date.now();
+            const loadingDiv = createLoadingIndicator(loadingId, 'Hans is writing...');
             chatContainer.appendChild(loadingDiv);
             chatContainer.scrollTop = chatContainer.scrollHeight;
-
             try {
-                // Include the current topic in the request if needed, 
-                // but the backend handles system prompts which we could potentially update
-                // For simplicity, we just send the message.
                 const response = await fetch('/chat/api', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        message: message,
-                        context: selectedTopic // Sending context in case backend needs it
-                    }),
+                    credentials: 'same-origin',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message, context: selectedTopic }),
                 });
-
+                if (response.status === 401) { window.location.href = '/login'; return; }
                 const data = await response.json();
-
-                // Remove loading indicator
-                const indicator = document.getElementById(loadingIndicatorId);
-                if (indicator) indicator.remove();
-
-                if (data.choices && data.choices[0] && data.choices[0].message) {
-                    addMessage(data.choices[0].message.content, 'assistant');
-                    // Update progress mockly
-                    updateProgress();
-                } else {
-                    addMessage("Entschuldigung, ich habe ein Problem. Versuchen Sie es später noch einmal.", 'assistant');
-                }
+                document.getElementById(loadingId)?.remove();
+                addMessage(data.choices?.[0]?.message?.content || "Sorry, I had a problem. Try again later.", 'assistant');
+                updateProgress();
             } catch (error) {
-                console.error('Error:', error);
-                const indicator = document.getElementById(loadingIndicatorId);
-                if (indicator) indicator.remove();
-                addMessage("Entschuldigung, es gab einen Fehler bei der Verbindung.", 'assistant');
+                document.getElementById(loadingId)?.remove();
+                addMessage("Sorry, there was a connection error.", 'assistant');
             }
         }
 
         let progress = 0;
         function updateProgress() {
             progress = Math.min(100, progress + 10);
-            const progressBar = document.getElementById('progress-bar');
-            const progressPercentage = document.getElementById('progress-percentage');
-            if (progressBar) progressBar.style.width = progress + '%';
-            if (progressPercentage) progressPercentage.textContent = progress + '%';
+            const bar = document.getElementById('progress-bar');
+            const pct = document.getElementById('progress-percentage');
+            if (bar) bar.style.width = progress + '%';
+            if (pct) pct.textContent = progress + '%';
         }
 
         sendBtn.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-
-        // Handle Enter key on modal topic selection
+        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
         window.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && selectedTopic && topicModal && topicModal.parentElement) {
-                startChat();
-            }
+            if (e.key === 'Enter' && selectedTopic && topicModal && topicModal.parentElement) startChat();
         });
     </script>
 </body>

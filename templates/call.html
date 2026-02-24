@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>DeutschAI - Sprachanruf</title>
+    <title>DeutschAI - Voice Call</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200..800&display=swap"
@@ -16,9 +16,7 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        "primary": "#ea2a33",
-                    },
+                    colors: { "primary": "#ea2a33" },
                     fontFamily: { "display": ["Plus Jakarta Sans", "sans-serif"] }
                 }
             }
@@ -30,13 +28,11 @@
             min-height: 100vh;
         }
 
-        /* Phone screen container */
         .phone-screen {
             background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             box-shadow: 0 0 80px rgba(234, 42, 51, 0.15), 0 40px 100px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
-        /* Ripple / pulse animation on AI avatar when speaking */
         @keyframes ripple {
             0% {
                 transform: scale(1);
@@ -63,7 +59,6 @@
             animation-delay: 0.9s;
         }
 
-        /* Mic button pulse when listening */
         @keyframes mic-pulse {
 
             0%,
@@ -80,7 +75,6 @@
             animation: mic-pulse 1.2s ease-in-out infinite;
         }
 
-        /* Sound wave bars */
         @keyframes wave {
 
             0%,
@@ -117,7 +111,6 @@
             animation-delay: 0.1s;
         }
 
-        /* Transcript scroll */
         #transcript::-webkit-scrollbar {
             width: 4px;
         }
@@ -163,20 +156,18 @@
 
         <!-- Call Label -->
         <div class="flex flex-col items-center pt-6 pb-4 px-6 gap-1">
-            <p class="text-white/30 text-xs font-bold uppercase tracking-widest">Sprachanruf</p>
+            <p class="text-white/30 text-xs font-bold uppercase tracking-widest">Voice Call</p>
             <h1 class="text-white text-2xl font-extrabold tracking-tight">Hans – DeutschAI</h1>
             <div id="status-label" class="flex items-center gap-1.5 mt-1">
                 <span class="size-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <p class="text-emerald-400 text-xs font-bold">Wird gestartet…</p>
+                <p class="text-emerald-400 text-xs font-bold">Starting...</p>
             </div>
         </div>
 
         <!-- AI Avatar -->
         <div class="flex justify-center py-4">
             <div class="relative flex items-center justify-center">
-                <!-- Ripple rings (shown when AI speaks) -->
                 <div id="ai-ripple" class="absolute size-20 rounded-full hidden ring-ripple"></div>
-                <!-- Avatar -->
                 <div
                     class="relative z-10 size-24 rounded-full bg-gradient-to-br from-primary to-rose-700 flex items-center justify-center shadow-2xl border-4 border-white/10">
                     <span class="text-5xl">🧑‍🏫</span>
@@ -184,7 +175,7 @@
             </div>
         </div>
 
-        <!-- Sound wave (shown when AI is speaking) -->
+        <!-- Sound wave -->
         <div id="soundwave" class="flex items-center justify-center gap-1.5 h-7 hidden">
             <div class="wave-bar w-1.5 bg-primary/70 rounded-full"></div>
             <div class="wave-bar w-1.5 bg-primary rounded-full"></div>
@@ -194,59 +185,47 @@
             <div class="wave-bar w-1.5 bg-primary/70 rounded-full"></div>
         </div>
 
-        <!-- Transcript Area — flex-1 so it fills remaining height, scrolls internally -->
+        <!-- Transcript Area -->
         <div id="transcript" class="flex-1 flex flex-col gap-3 px-4 py-3 overflow-y-auto min-h-0">
             <div id="placeholder" class="flex justify-center py-4">
-                <p class="text-white/20 text-xs text-center">Sprich einfach — Hans hört immer zu</p>
+                <p class="text-white/20 text-xs text-center">Just speak — Hans is always listening</p>
             </div>
         </div>
 
         <!-- Call Controls -->
         <div class="flex flex-col items-center gap-4 px-6 pb-10 pt-3 shrink-0">
-            <!-- Secondary controls -->
             <div class="flex items-center justify-around w-full">
                 <button id="mute-btn" onclick="toggleMute()" class="flex flex-col items-center gap-1 group">
                     <div id="mute-circle"
                         class="size-12 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
                         <span id="mute-icon" class="material-symbols-outlined text-white text-[22px]">mic</span>
                     </div>
-                    <span class="text-white/40 text-[10px] font-medium">Stumm</span>
+                    <span class="text-white/40 text-[10px] font-medium">Mute</span>
                 </button>
-
                 <button id="speaker-btn" onclick="toggleSpeaker()" class="flex flex-col items-center gap-1 group">
                     <div
                         class="size-12 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
                         <span id="speaker-icon"
                             class="material-symbols-outlined text-white text-[22px]">volume_up</span>
                     </div>
-                    <span class="text-white/40 text-[10px] font-medium">Lautsprecher</span>
+                    <span class="text-white/40 text-[10px] font-medium">Speaker</span>
                 </button>
             </div>
-
-            <!-- End call button -->
             <button onclick="endCall()" class="flex flex-col items-center gap-1 group">
                 <div
                     class="size-14 rounded-full bg-red-600 flex items-center justify-center group-hover:bg-red-700 transition-all shadow-lg shadow-red-900/50">
                     <span class="material-symbols-outlined text-white text-[28px]">call_end</span>
                 </div>
-                <span class="text-white/40 text-[10px] font-medium">Auflegen</span>
+                <span class="text-white/40 text-[10px] font-medium">End Call</span>
             </button>
         </div>
     </div>
 
     <script>
-        // ── State ──────────────────────────────────────────────
-        let isMuted = false;
-        let isSpeakerOn = true;
-        let recognition = null;
-        let callSeconds = 0;
-        let callTimer = null;
-        let isAISpeaking = false;
-        let isProcessing = false;
-        let interimEl = null;
-        let conversationHistory = [];
+        let isMuted = false, isSpeakerOn = true, recognition = null;
+        let callSeconds = 0, callTimer = null, isAISpeaking = false;
+        let isProcessing = false, interimEl = null, conversationHistory = [];
 
-        // ── Timer ──────────────────────────────────────────────
         callTimer = setInterval(() => {
             callSeconds++;
             const m = String(Math.floor(callSeconds / 60)).padStart(2, '0');
@@ -254,15 +233,13 @@
             document.getElementById('call-time').textContent = `${m}:${s}`;
         }, 1000);
 
-        // ── Continuous Speech Recognition ──────────────────────
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
         function initRecognition() {
             if (!SpeechRecognition) {
-                addMessage('system', 'Spracherkennung wird von diesem Browser nicht unterstützt. Bitte Chrome verwenden.');
+                addMessage('system', 'Speech recognition not supported. Please use Chrome.');
                 return;
             }
-
             recognition = new SpeechRecognition();
             recognition.lang = 'de-DE';
             recognition.continuous = false;
@@ -274,162 +251,117 @@
                 const text = result[0].transcript;
                 if (result.isFinal) {
                     clearInterim();
-                    if (text.trim()) {
-                        addMessage('user', text.trim());
-                        isProcessing = true;
-                        sendToAI(text.trim());
+                    // Guard: ignore very short or empty transcripts
+                    if (text.trim().length < 2) {
+                        setTimeout(restartListening, 300);
+                        return;
                     }
+                    addMessage('user', text.trim());
+                    isProcessing = true;
+                    sendToAI(text.trim());
                 } else {
                     showInterim(text);
                 }
             };
 
             recognition.onerror = (e) => {
-                if (e.error === 'no-speech' || e.error === 'aborted') return;
+                if (e.error === 'no-speech' || e.error === 'aborted') {
+                    // Silently restart on no-speech
+                    setTimeout(() => { if (!isAISpeaking && !isMuted && !isProcessing) restartListening(); }, 500);
+                    return;
+                }
+                if (e.error === 'audio-capture' || e.error === 'not-allowed') {
+                    addMessage('system', 'Microphone access denied. Please allow microphone access.');
+                    return;
+                }
                 console.warn('STT error:', e.error);
+                setTimeout(restartListening, 1000);
             };
 
             recognition.onend = () => {
-                // Auto-restart unless blocked
-                if (!isAISpeaking && !isMuted && !isProcessing) {
-                    setTimeout(restartListening, 250);
-                }
+                if (!isAISpeaking && !isMuted && !isProcessing) setTimeout(restartListening, 250);
             };
         }
 
         function restartListening() {
             if (!recognition || isAISpeaking || isMuted || isProcessing) return;
-            try { recognition.start(); setStatus('listening', 'Hört zu…'); }
+            try { recognition.start(); setStatus('listening', 'Listening...'); }
             catch (_) { }
         }
 
-        function stopListening() {
-            try { recognition.abort(); } catch (_) { }
-        }
+        function stopListening() { try { recognition.abort(); } catch (_) { } }
 
-        // ── Live interim bubble ────────────────────────────────
         function showInterim(text) {
             const container = document.getElementById('transcript');
             if (!interimEl) {
                 interimEl = document.createElement('div');
                 interimEl.className = 'flex justify-end w-full';
-                interimEl.innerHTML = `<div class="bg-primary/30 border border-primary/20 rounded-2xl rounded-br-sm px-4 py-2.5 w-full">
-                    <p id="interim-text" class="text-white/50 text-sm leading-relaxed italic break-words"></p></div>`;
+                interimEl.innerHTML = `<div class="bg-primary/30 border border-primary/20 rounded-2xl rounded-br-sm px-4 py-2.5 w-full"><p id="interim-text" class="text-white/50 text-sm leading-relaxed italic break-words"></p></div>`;
                 container.appendChild(interimEl);
             }
             document.getElementById('interim-text').textContent = text;
             container.scrollTop = container.scrollHeight;
         }
 
-        function clearInterim() {
-            if (interimEl) { interimEl.remove(); interimEl = null; }
-        }
+        function clearInterim() { if (interimEl) { interimEl.remove(); interimEl = null; } }
 
-        // ── AI API ─────────────────────────────────────────────
         async function sendToAI(userText) {
-            setStatus('thinking', 'Hans denkt nach…');
+            setStatus('thinking', 'Hans is thinking...');
             conversationHistory.push({ role: 'user', content: userText });
             try {
                 const res = await fetch('/call/api', {
                     method: 'POST',
+                    credentials: 'same-origin',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ messages: conversationHistory })
                 });
+                if (res.status === 401) { window.location.href = '/login'; return; }
                 const data = await res.json();
-                const ai = data?.choices?.[0]?.message?.content || 'Entschuldigung, ich konnte das nicht verstehen.';
+                const ai = data?.choices?.[0]?.message?.content || 'Entschuldigung, kannst du das wiederholen?';
                 conversationHistory.push({ role: 'assistant', content: ai });
                 addMessage('ai', ai);
                 speakText(ai);
             } catch (err) {
                 console.error(err);
-                addMessage('system', 'Verbindungsfehler.');
+                addMessage('system', 'Connection error.');
                 isProcessing = false;
                 restartListening();
             }
         }
 
-        // ── TTS ────────────────────────────────────────────────
         function speakText(text) {
-            isAISpeaking = true;
-            isProcessing = false;
+            isAISpeaking = true; isProcessing = false;
             const ripple = document.getElementById('ai-ripple');
             const soundwave = document.getElementById('soundwave');
             window.speechSynthesis.cancel();
-
-            if (!isSpeakerOn) {
-                isAISpeaking = false;
-                setStatus('listening', 'Hört zu…');
-                restartListening();
-                return;
-            }
-
+            if (!isSpeakerOn) { isAISpeaking = false; setStatus('listening', 'Listening...'); restartListening(); return; }
             const utt = new SpeechSynthesisUtterance(text);
-            utt.lang = 'de-DE';
-            utt.rate = 0.95;
-            utt.pitch = 1.05;
+            utt.lang = 'de-DE'; utt.rate = 0.95; utt.pitch = 1.05;
             const voices = window.speechSynthesis.getVoices();
             const de = voices.find(v => v.lang.startsWith('de'));
             if (de) utt.voice = de;
-
-            utt.onstart = () => {
-                ripple.classList.remove('hidden');
-                soundwave.classList.remove('hidden');
-                setStatus('speaking', 'Hans spricht…');
-            };
-            utt.onend = () => {
-                ripple.classList.add('hidden');
-                soundwave.classList.add('hidden');
-                isAISpeaking = false;
-                setStatus('listening', 'Hört zu…');
-                restartListening();
-            };
-            utt.onerror = () => {
-                ripple.classList.add('hidden');
-                soundwave.classList.add('hidden');
-                isAISpeaking = false;
-                restartListening();
-            };
+            utt.onstart = () => { ripple.classList.remove('hidden'); soundwave.classList.remove('hidden'); setStatus('speaking', 'Hans is speaking...'); };
+            utt.onend = () => { ripple.classList.add('hidden'); soundwave.classList.add('hidden'); isAISpeaking = false; setStatus('listening', 'Listening...'); restartListening(); };
+            utt.onerror = () => { ripple.classList.add('hidden'); soundwave.classList.add('hidden'); isAISpeaking = false; restartListening(); };
             window.speechSynthesis.speak(utt);
         }
 
-        // ── Status helper ──────────────────────────────────────
         function setStatus(type, label) {
-            const map = {
-                listening: ['bg-emerald-400', 'text-emerald-400'],
-                thinking: ['bg-amber-400', 'text-amber-400'],
-                speaking: ['bg-blue-400', 'text-blue-400'],
-                muted: ['bg-slate-400', 'text-slate-400'],
-                error: ['bg-red-400', 'text-red-400'],
-            };
+            const map = { listening: ['bg-emerald-400', 'text-emerald-400'], thinking: ['bg-amber-400', 'text-amber-400'], speaking: ['bg-blue-400', 'text-blue-400'], muted: ['bg-slate-400', 'text-slate-400'], error: ['bg-red-400', 'text-red-400'] };
             const [dot, txt] = map[type] || map.listening;
-            document.getElementById('status-label').innerHTML =
-                `<span class="size-2 rounded-full ${dot} animate-pulse"></span>
-                 <p class="${txt} text-xs font-bold">${label}</p>`;
+            document.getElementById('status-label').innerHTML = `<span class="size-2 rounded-full ${dot} animate-pulse"></span><p class="${txt} text-xs font-bold">${label}</p>`;
         }
 
-        // ── Transcript ─────────────────────────────────────────
         function addMessage(role, text) {
             const container = document.getElementById('transcript');
             const placeholder = document.getElementById('placeholder');
             if (placeholder) placeholder.remove();
-
             const wrapper = document.createElement('div');
             wrapper.className = 'w-full';
-
             if (role === 'user') {
-                wrapper.innerHTML = `
-                    <div class="flex justify-end w-full">
-                        <div class="bg-primary rounded-2xl rounded-br-sm px-4 py-3 shadow" style="max-width:90%">
-                            <p class="text-white text-sm leading-relaxed break-words">${escapeHtml(text)}</p>
-                        </div>
-                    </div>`;
+                wrapper.innerHTML = `<div class="flex justify-end w-full"><div class="bg-primary rounded-2xl rounded-br-sm px-4 py-3 shadow" style="max-width:90%"><p class="text-white text-sm leading-relaxed break-words">${escapeHtml(text)}</p></div></div>`;
             } else if (role === 'ai') {
-                wrapper.innerHTML = `
-                    <div class="flex justify-start w-full">
-                        <div class="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl rounded-bl-sm px-4 py-3 shadow" style="max-width:90%">
-                            <p class="text-white/90 text-sm leading-relaxed break-words">${escapeHtml(text)}</p>
-                        </div>
-                    </div>`;
+                wrapper.innerHTML = `<div class="flex justify-start w-full"><div class="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl rounded-bl-sm px-4 py-3 shadow" style="max-width:90%"><p class="text-white/90 text-sm leading-relaxed break-words">${escapeHtml(text)}</p></div></div>`;
             } else {
                 wrapper.innerHTML = `<p class="text-white/30 text-xs text-center italic py-1">${escapeHtml(text)}</p>`;
             }
@@ -437,18 +369,15 @@
             container.scrollTop = container.scrollHeight;
         }
 
-        function escapeHtml(t) {
-            return t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        }
+        function escapeHtml(t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
-        // ── Controls ───────────────────────────────────────────
         function toggleMute() {
             isMuted = !isMuted;
             document.getElementById('mute-icon').textContent = isMuted ? 'mic_off' : 'mic';
             document.getElementById('mute-circle').classList.toggle('bg-primary/40', isMuted);
             document.getElementById('mute-circle').classList.toggle('bg-white/10', !isMuted);
-            if (isMuted) { stopListening(); setStatus('muted', 'Stummgeschaltet'); }
-            else { setStatus('listening', 'Hört zu…'); restartListening(); }
+            if (isMuted) { stopListening(); setStatus('muted', 'Muted'); }
+            else { setStatus('listening', 'Listening...'); restartListening(); }
         }
 
         function toggleSpeaker() {
@@ -457,14 +386,8 @@
             if (!isSpeakerOn) window.speechSynthesis.cancel();
         }
 
-        function endCall() {
-            window.speechSynthesis.cancel();
-            stopListening();
-            clearInterval(callTimer);
-            window.location.href = '/dashboard';
-        }
+        function endCall() { window.speechSynthesis.cancel(); stopListening(); clearInterval(callTimer); window.location.href = '/dashboard'; }
 
-        // ── Boot ───────────────────────────────────────────────
         window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
 
         window.addEventListener('load', () => {
