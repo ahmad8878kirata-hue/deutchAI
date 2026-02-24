@@ -178,7 +178,7 @@
 
         async function fetchVocab() {
             try {
-                const response = await fetch('/vocabulary/api/list', { credentials: 'same-origin' });
+                const response = await fetch('/vocabulary/api/list', { credentials: 'include' });
                 allVocabs = await response.json();
                 renderVocab(allVocabs);
             } catch (error) { console.error("Error fetching vocab:", error); }
@@ -240,7 +240,7 @@
         async function deleteVocab(id) {
             if (!confirm('Remove this word from your vocabulary?')) return;
             try {
-                await fetch(`/vocabulary/api/delete/${id}`, { method: 'DELETE', credentials: 'same-origin' });
+                await fetch(`/vocabulary/api/delete/${id}`, { method: 'DELETE', credentials: 'include' });
                 allVocabs = allVocabs.filter(v => v.id !== id);
                 renderVocab(allVocabs);
             } catch (error) { console.error("Error deleting vocab:", error); }

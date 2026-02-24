@@ -276,7 +276,7 @@
             try {
                 const response = await fetch('/practice/api', {
                     method: 'POST',
-                    credentials: 'same-origin',
+                    credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ text })
                 });
@@ -350,7 +350,7 @@
             try {
                 await fetch('/vocabulary/api/add', {
                     method: 'POST',
-                    credentials: 'same-origin',
+                    credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ word: cor.original, correction: cor.correction, explanation: cor.explanation })
                 });

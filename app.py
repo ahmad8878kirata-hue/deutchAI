@@ -1,21 +1,42 @@
 import os
 import requests
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Flask, render_template, redirect, url_for, request, flash, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'deutschai-secret-key-x7k2p9m4q1r8v5w3'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///deutschai.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SESSION_COOKIE_SAMESITE'] = 'None'
-app.config['SESSION_COOKIE_SECURE'] = True
+
+# Trust proxy headers for HTTPS detection
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+
+# Detect environment
+is_local = os.environ.get('FLASK_ENV') != 'production'
+
+# Session configuration
+if is_local:
+    # Local development - allow HTTP
+    app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+    app.config['SESSION_COOKIE_SECURE'] = False
+    app.config['REMEMBER_COOKIE_SAMESITE'] = 'Lax'
+    app.config['REMEMBER_COOKIE_SECURE'] = False
+else:
+    # Production - require HTTPS for cross-origin cookies
+    app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+    app.config['SESSION_COOKIE_SECURE'] = True
+    app.config['REMEMBER_COOKIE_SAMESITE'] = 'None'
+    app.config['REMEMBER_COOKIE_SECURE'] = True
+
 app.config['SESSION_COOKIE_HTTPONLY'] = True
-app.config['REMEMBER_COOKIE_SAMESITE'] = 'None'
-app.config['REMEMBER_COOKIE_SECURE'] = True
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
+app.config['REMEMBER_COOKIE_HTTPONLY'] = True
+app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=30)
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
@@ -67,6 +88,26 @@ def log_activity(user, type, description, points):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+@app.before_request
+def handle_options():
+    """Handle OPTIONS requests for CORS preflight"""
+    if request.method == 'OPTIONS':
+        response = app.make_response('')
+        response.headers.add('Access-Control-Allow-Origin', request.headers.get('Origin', '*'))
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+        return response
+
+@app.after_request
+def after_request(response):
+    """Add CORS headers to all responses"""
+    origin = request.headers.get('Origin')
+    if origin:
+        response.headers.add('Access-Control-Allow-Origin', origin)
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+    return response
+
 @app.context_processor
 def inject_user():
     return dict(user=current_user)
@@ -113,7 +154,7 @@ def login():
         password = request.form.get('password')
         user = User.query.filter_by(email=email).first()
         if user and bcrypt.check_password_hash(user.password, password):
-            login_user(user)
+            login_user(user, remember=True)
             return redirect(url_for('dashboard'))
         else:
             flash('Login unsuccessful. Please check email and password.', 'danger')
@@ -135,7 +176,7 @@ def dashboard():
 def chat():
     return render_template('chat.html')
 
-@app.route('/chat/api', methods=['POST'])
+@app.route('/chat/api', methods=['POST', 'OPTIONS'])
 @login_required
 def chat_api():
     data = request.json
@@ -179,7 +220,7 @@ def chat_api():
 def practice():
     return render_template('practice.html')
 
-@app.route('/practice/api', methods=['POST'])
+@app.route('/practice/api', methods=['POST', 'OPTIONS'])
 @login_required
 def practice_api():
     data = request.json
@@ -249,7 +290,7 @@ def practice_api():
 def call():
     return render_template('call.html')
 
-@app.route('/call/api', methods=['POST'])
+@app.route('/call/api', methods=['POST', 'OPTIONS'])
 @login_required
 def call_api():
     data = request.json
@@ -308,7 +349,7 @@ def setting():
 def vocabulary():
     return render_template('vocabulary.html')
 
-@app.route('/vocabulary/api/add', methods=['POST'])
+@app.route('/vocabulary/api/add', methods=['POST', 'OPTIONS'])
 @login_required
 def add_vocabulary():
     data = request.json
@@ -335,7 +376,7 @@ def add_vocabulary():
     db.session.commit()
     return jsonify({"message": "Vocabulary added successfully"}), 201
 
-@app.route('/vocabulary/api/list', methods=['GET'])
+@app.route('/vocabulary/api/list', methods=['GET', 'OPTIONS'])
 @login_required
 def list_vocabulary():
     vocabs = Vocabulary.query.filter_by(user_id=current_user.id).order_by(Vocabulary.timestamp.desc()).all()
@@ -347,7 +388,7 @@ def list_vocabulary():
         "timestamp": v.timestamp.isoformat()
     } for v in vocabs])
 
-@app.route('/vocabulary/api/delete/<int:vocab_id>', methods=['DELETE'])
+@app.route('/vocabulary/api/delete/<int:vocab_id>', methods=['DELETE', 'OPTIONS'])
 @login_required
 def delete_vocabulary(vocab_id):
     vocab = Vocabulary.query.filter_by(id=vocab_id, user_id=current_user.id).first()

@@ -352,7 +352,7 @@
             try {
                 const response = await fetch('/chat/api', {
                     method: 'POST',
-                    credentials: 'same-origin',
+                    credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ message: `Let's have a conversation about "${selectedTopic}". Start our German practice session.`, context: selectedTopic }),
                 });
@@ -409,7 +409,7 @@
             try {
                 const response = await fetch('/chat/api', {
                     method: 'POST',
-                    credentials: 'same-origin',
+                    credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ message, context: selectedTopic }),
                 });

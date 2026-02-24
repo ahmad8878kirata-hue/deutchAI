@@ -309,9 +309,9 @@
             setStatus('thinking', 'Hans is thinking...');
             conversationHistory.push({ role: 'user', content: userText });
             try {
-                const res = await fetch('/call/api', {
+const res = await fetch('/call/api', {
                     method: 'POST',
-                    credentials: 'same-origin',
+                    credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ messages: conversationHistory })
                 });
