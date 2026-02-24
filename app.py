@@ -16,22 +16,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Trust proxy headers for HTTPS detection
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
-# Detect environment
-is_local = os.environ.get('FLASK_ENV') != 'production'
-
-# Session configuration
-if is_local:
-    # Local development - allow HTTP
-    app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
-    app.config['SESSION_COOKIE_SECURE'] = False
-    app.config['REMEMBER_COOKIE_SAMESITE'] = 'Lax'
-    app.config['REMEMBER_COOKIE_SECURE'] = False
-else:
-    # Production - require HTTPS for cross-origin cookies
-    app.config['SESSION_COOKIE_SAMESITE'] = 'None'
-    app.config['SESSION_COOKIE_SECURE'] = True
-    app.config['REMEMBER_COOKIE_SAMESITE'] = 'None'
-    app.config['REMEMBER_COOKIE_SECURE'] = True
+# Session configuration - production uses HTTPS
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+app.config['SESSION_COOKIE_SECURE'] = True
+app.config['REMEMBER_COOKIE_SAMESITE'] = 'None'
+app.config['REMEMBER_COOKIE_SECURE'] = True
 
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
@@ -116,6 +105,21 @@ def inject_user():
 def index():
     return render_template('index.html')
 
+@app.route('/debug/session')
+def debug_session():
+    """Debug endpoint to check session status"""
+    from flask import session
+    return jsonify({
+        'authenticated': current_user.is_authenticated,
+        'user_id': current_user.id if current_user.is_authenticated else None,
+        'session_permanent': session.permanent if hasattr(session, 'permanent') else None,
+        'config': {
+            'SESSION_COOKIE_SECURE': app.config.get('SESSION_COOKIE_SECURE'),
+            'SESSION_COOKIE_SAMESITE': app.config.get('SESSION_COOKIE_SAMESITE'),
+            'SESSION_COOKIE_HTTPONLY': app.config.get('SESSION_COOKIE_HTTPONLY'),
+        }
+    })
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if current_user.is_authenticated:
@@ -155,6 +159,9 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user and bcrypt.check_password_hash(user.password, password):
             login_user(user, remember=True)
+            # Make session permanent so it persists longer
+            from flask import session
+            session.permanent = True
             return redirect(url_for('dashboard'))
         else:
             flash('Login unsuccessful. Please check email and password.', 'danger')
@@ -177,8 +184,24 @@ def chat():
     return render_template('chat.html')
 
 @app.route('/chat/api', methods=['POST', 'OPTIONS'])
-@login_required
 def chat_api():
+    if request.method == 'OPTIONS':
+        response = make_response('', 200)
+        response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+        return response
+    
+    # Debug: Check session
+    if not current_user.is_authenticated:
+        return jsonify({
+            "error": "Unauthorized",
+            "debug": {
+                "cookies": list(request.cookies.keys()),
+                "session_cookie": request.cookies.get('session', 'NOT SET'),
+                "user_agent": request.headers.get('User-Agent', 'Unknown')[:50]
+            }
+        }), 401
+    
     data = request.json
     user_message = data.get('message')
     
@@ -221,8 +244,21 @@ def practice():
     return render_template('practice.html')
 
 @app.route('/practice/api', methods=['POST', 'OPTIONS'])
-@login_required
 def practice_api():
+    if request.method == 'OPTIONS':
+        return '', 200
+    
+    # Debug: Check session
+    if not current_user.is_authenticated:
+        return jsonify({
+            "error": "Unauthorized",
+            "debug": {
+                "cookies": list(request.cookies.keys()),
+                "session_cookie": request.cookies.get('session', 'NOT SET'),
+                "user_agent": request.headers.get('User-Agent', 'Unknown')[:50]
+            }
+        }), 401
+    
     data = request.json
     user_text = data.get('text')
     
@@ -291,8 +327,23 @@ def call():
     return render_template('call.html')
 
 @app.route('/call/api', methods=['POST', 'OPTIONS'])
-@login_required
 def call_api():
+    if request.method == 'OPTIONS':
+        return '', 200
+    
+    # Debug: Check session
+    if not current_user.is_authenticated:
+        from flask import session
+        return jsonify({
+            "error": "Unauthorized",
+            "debug": {
+                "cookies": list(request.cookies.keys()),
+                "session_cookie": request.cookies.get('session', 'NOT SET'),
+                "session_data": dict(session),
+                "user_agent": request.headers.get('User-Agent', 'Unknown')[:50]
+            }
+        }), 401
+    
     data = request.json
     messages = data.get('messages', [])
 
