@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ translations.lang_code }}" dir="{{ lang_dir }}">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>DeutschAI - Sign Up</title>
+    <title>DeutschAI - {{ translations.signup }}</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
@@ -42,17 +42,24 @@
         @apply flex flex-col gap-1.5;
     }
     .input-label {
-        @apply text-sm font-semibold text-text-main ml-1;
+        @apply text-sm font-semibold text-text-main;
     }
     .form-input {
         @apply w-full px-4 py-3 rounded-xl border border-border-light bg-white text-text-main placeholder-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary focus:outline-none transition-all text-sm shadow-input;
     }
-</style>
+    {% if lang_dir == 'rtl' %}
+    .form-input { text-align: right; }
+    .input-label { text-align: right; }
+    body { font-weight: 600 !important; }
+    h1, h2, h3, h4, h5, h6 { font-weight: 700 !important; }
+    .font-bold { font-weight: 800 !important; }
+    {% endif %}
+    </style>
 </head>
 
 <body
     class="font-display bg-bg-page min-h-screen flex flex-col text-slate-900 selection:bg-primary/10 selection:text-primary">
-    <nav class="w-full px-6 py-6 absolute top-0 left-0 z-20">
+    <nav class="w-full px-6 py-6 absolute top-0 left-0 z-20 {% if lang_dir == 'rtl' %}right-0 left-auto{% endif %}">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-2">
                 <div class="size-8 text-primary">
@@ -64,7 +71,7 @@
                 </div>
                 <span class="text-xl font-bold tracking-tight text-text-main">DeutschAI</span>
             </div>
-            <a class="text-sm font-semibold text-text-sub hover:text-primary transition-colors" href="#">Help Center</a>
+            <a class="text-sm font-semibold text-text-sub hover:text-primary transition-colors" href="#">{{ translations.help_center }}</a>
         </div>
     </nav>
     <main class="flex-grow flex items-center justify-center relative w-full px-4 pt-20 pb-12">
@@ -72,20 +79,18 @@
             class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-red-50/60 via-bg-page to-bg-page">
         </div>
         <div class="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
-            <div class="hidden lg:block space-y-8 pr-12">
+            <div class="hidden lg:block space-y-8 {% if lang_dir == 'rtl' %}pr-0 pl-12{% else %}pr-12{% endif %}">
                 <div class="space-y-5">
                     <div
                         class="inline-flex items-center gap-2 px-3 py-1 bg-white border border-border-light text-primary text-xs font-bold rounded-full tracking-wide uppercase shadow-sm">
                         <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-                        AI-Assisted Learning
+                        {{ translations.ai_learning }}
                     </div>
                     <h1 class="text-5xl font-extrabold text-text-main leading-tight tracking-tight">
-                        Fluency is just a <br />
-                        <span class="text-primary">conversation</span> away.
+                        {{ translations.fluency_away|safe }}
                     </h1>
                     <p class="text-lg text-text-sub leading-relaxed max-w-lg">
-                        Experience the next generation of language learning. Our AI adapts to your CEFR level in
-                        real-time, correcting your pronunciation and grammar instantly.
+                        {{ translations.next_gen }}
                     </p>
                 </div>
                 <div class="grid grid-cols-2 gap-6 pt-4 border-t border-border-light/50">
@@ -95,8 +100,8 @@
                             <span class="material-symbols-outlined">school</span>
                         </div>
                         <div>
-                            <h3 class="font-bold text-text-main">Structured Path</h3>
-                            <p class="text-sm text-text-sub mt-1">From A1 beginner to C2 mastery</p>
+                            <h3 class="font-bold text-text-main">{{ translations.structured_path }}</h3>
+                            <p class="text-sm text-text-sub mt-1">{{ translations.a1_to_c2 }}</p>
                         </div>
                     </div>
                     <div class="flex gap-4 items-start pt-6">
@@ -105,8 +110,8 @@
                             <span class="material-symbols-outlined">mic</span>
                         </div>
                         <div>
-                            <h3 class="font-bold text-text-main">Voice Analysis</h3>
-                            <p class="text-sm text-text-sub mt-1">Real-time pronunciation feedback</p>
+                            <h3 class="font-bold text-text-main">{{ translations.voice_analysis }}</h3>
+                            <p class="text-sm text-text-sub mt-1">{{ translations.realtime_feedback }}</p>
                         </div>
                     </div>
                 </div>
@@ -116,8 +121,8 @@
                     class="bg-surface rounded-3xl shadow-card border border-border-light p-8 md:p-10 relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-orange-500"></div>
                     <div class="mb-8 text-center">
-                        <h2 class="text-2xl font-bold text-text-main">Create Account</h2>
-                        <p class="text-text-sub text-sm mt-2">Start your journey to German fluency today.</p>
+                        <h2 class="text-2xl font-bold text-text-main">{{ translations.signup_title }}</h2>
+                        <p class="text-text-sub text-sm mt-2">{{ translations.start_journey }}</p>
                     </div>
                     {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
@@ -132,61 +137,77 @@
                     <form class="space-y-5" method="POST">
                         <div class="grid grid-cols-2 gap-4">
                             <div class="input-group">
-                                <label class="input-label">First Name</label>
+                                <label class="input-label">{{ translations.first_name }}</label>
                                 <input class="form-input" name="first_name" placeholder="Hans" required=""
                                     type="text" />
                             </div>
                             <div class="input-group">
-                                <label class="input-label">Last Name</label>
+                                <label class="input-label">{{ translations.last_name }}</label>
                                 <input class="form-input" name="last_name" placeholder="Müller" required=""
                                     type="text" />
                             </div>
                         </div>
                         <div class="input-group">
-                            <label class="input-label">Current German Level</label>
+                            <label class="input-label">{{ translations.current_german_level }}</label>
                             <div class="relative">
                                 <select class="form-input appearance-none cursor-pointer pr-10 invalid:text-slate-400"
                                     name="german_level" required="">
-                                    <option disabled="" selected="" value="">Select your CEFR level</option>
-                                    <option value="A1">A1 - Beginner</option>
-                                    <option value="A2">A2 - Elementary</option>
-                                    <option value="B1">B1 - Intermediate</option>
-                                    <option value="B2">B2 - Upper Intermediate</option>
-                                    <option value="C1">C1 - Advanced</option>
-                                    <option value="C2">C2 - Mastery</option>
+                                    <option disabled="" selected="" value="">{{ translations.select_cefr_level }}</option>
+                                    <option value="A1">A1 - {{ translations.beginner }}</option>
+                                    <option value="A2">A2 - {{ translations.elementary }}</option>
+                                    <option value="B1">B1 - {{ translations.intermediate }}</option>
+                                    <option value="B2">B2 - {{ translations.upper_intermediate }}</option>
+                                    <option value="C1">C1 - {{ translations.advanced }}</option>
+                                    <option value="C2">C2 - {{ translations.mastery }}</option>
                                 </select>
                                 <div
-                                    class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-text-sub">
+                                    class="absolute inset-y-0 {% if lang_dir == 'rtl' %}left-0 right-auto{% else %}right-0 left-auto{% endif %} flex items-center {% if lang_dir == 'rtl' %}pl-4 pr-{% else %}pr-4{% endif %} pointer-events-none text-text-sub">
                                     <span class="material-symbols-outlined">expand_more</span>
                                 </div>
                             </div>
                         </div>
                         <div class="input-group">
-                            <label class="input-label">Email</label>
+                            <label class="input-label">{{ translations.native_language }}</label>
+                            <div class="relative">
+                                <select class="form-input appearance-none cursor-pointer pr-10 invalid:text-slate-400"
+                                    name="native_language" required="">
+                                    <option disabled="" selected="" value="">{{ translations.select_native_language }}</option>
+                                    <option value="en">English</option>
+                                    <option value="ar">العربية (Arabic)</option>
+                                </select>
+                                <div
+                                    class="absolute inset-y-0 {% if lang_dir == 'rtl' %}left-0 right-auto{% else %}right-0 left-auto{% endif %} flex items-center {% if lang_dir == 'rtl' %}pl-4 pr-{% else %}pr-4{% endif %} pointer-events-none text-text-sub">
+                                    <span class="material-symbols-outlined">expand_more</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-text-sub mt-1">{{ translations.correction_instructions }}</p>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">{{ translations.email }}</label>
                             <input class="form-input" name="email" placeholder="name@example.com" required=""
                                 type="email" />
                         </div>
                         <div class="input-group">
-                            <label class="input-label">Password</label>
+                            <label class="input-label">{{ translations.password }}</label>
                             <input class="form-input" name="password" placeholder="Create a strong password" required=""
                                 type="password" />
                         </div>
                         <div class="input-group">
-                            <label class="input-label">Confirm Password</label>
+                            <label class="input-label">{{ translations.confirm_password }}</label>
                             <input class="form-input" name="confirm_password" placeholder="Repeat your password"
                                 required="" type="password" />
                         </div>
                         <button
                             class="w-full bg-primary hover:bg-primary-hover text-white font-bold py-3.5 rounded-xl transition-all shadow-lg shadow-primary/20 hover:shadow-primary/30 flex items-center justify-center gap-2 mt-4"
                             type="submit">
-                            Sign Up
+                            {{ translations.signup }}
                         </button>
                     </form>
                 </div>
                 <p class="text-center text-sm text-text-sub mt-6 font-medium">
-                    Already have an account?
+                    {{ translations.already_have_account }}
                     <a class="text-primary hover:text-primary-hover font-bold transition-colors hover:underline"
-                        href="/login">Log In</a>
+                        href="/login">{{ translations.login }}</a>
                 </p>
             </div>
         </div>

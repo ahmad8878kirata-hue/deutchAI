@@ -2,11 +2,332 @@ import os
 import requests
 import json
 from datetime import datetime, timedelta
-from flask import Flask, render_template, redirect, url_for, request, flash, jsonify
+from flask import Flask, render_template, redirect, url_for, request, flash, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
 from werkzeug.middleware.proxy_fix import ProxyFix
+
+TRANSLATIONS = {
+    'en': {
+        'dir': 'ltr',
+        'lang_code': 'en',
+        'welcome': 'Welcome',
+        'login': 'Log In',
+        'logout': 'Log Out',
+        'signup': 'Sign Up',
+        'signup_title': 'Create Account',
+        'login_title': 'Welcome back',
+        'start_journey': 'Start your journey to German fluency today.',
+        'first_name': 'First Name',
+        'last_name': 'Last Name',
+        'current_german_level': 'Current German Level',
+        'select_cefr_level': 'Select your CEFR level',
+        'email': 'Email',
+        'password': 'Password',
+        'confirm_password': 'Confirm Password',
+        'already_have_account': 'Already have an account?',
+        'native_language': 'Native Language',
+        'select_native_language': 'Select your native language',
+        'correction_instructions': 'Grammar corrections will be provided in your native language.',
+        'vocab_translation': 'Vocabulary translations will be shown in your native language.',
+        'dashboard': 'Dashboard',
+        'chat': 'Chat',
+        'practice': 'Practice',
+        'vocabulary': 'Vocabulary',
+        'profile': 'Profile',
+        'settings': 'Settings',
+        'account': 'Account',
+        'save_changes': 'Save Changes',
+        'cancel': 'Cancel',
+        'learning_preferences': 'Learning Preferences',
+        'target_cefr_level': 'Target CEFR Level',
+        'profile_information': 'Profile Information',
+        'update_photo': 'Update your photo and personal details.',
+        'change_photo': 'Change photo',
+        'remove': 'Remove',
+        'supported_formats': 'Supported formats: JPG, PNG. Max size: 5MB.',
+        'email_address': 'Email address',
+        'my_vocabulary': 'My Vocabulary',
+        'vocabulary_subtitle': "Words you've improved during your writing practice sessions.",
+        'search_words': 'Search words...',
+        'vocabulary_empty': 'Your vocabulary list is empty',
+        'vocabulary_empty_desc': 'Words that you\'ve made mistakes with will appear here automatically after your writing practice sessions.',
+        'start_practicing': 'Start Practicing',
+        'detailed_analysis': 'Detailed Analysis',
+        'overview': 'Overview',
+        'grammar': 'Grammar',
+        'vocabulary_level': 'Vocabulary',
+        'summary': 'Summary',
+        'write_something': 'Write something to get analysis!',
+        'check_grammar': 'Check Grammar',
+        'checking': 'Checking...',
+        'ready': 'Ready',
+        'words': 'words',
+        'ai_chat': 'AI Chat',
+        'type_message': 'Type your message in German...',
+        'send': 'Send',
+        'speaking_practice': 'Speaking Practice',
+        'call_hans': 'Call Hans',
+        'end_call': 'End Call',
+        'beginner': 'Beginner',
+        'elementary': 'Elementary',
+        'intermediate': 'Intermediate',
+        'upper_intermediate': 'Upper Int.',
+        'advanced': 'Advanced',
+        'mastery': 'Mastery',
+        'level': 'Level',
+        'enter_details': 'Enter your details to access your lessons.',
+        'forgot_password': 'Forgot password?',
+        'signin': 'Sign In',
+        'fluency_away': 'Fluency is just a conversation away.',
+        'ai_learning': 'AI-Assisted Learning',
+        'next_gen': 'Experience the next generation of language learning. Our AI adapts to your CEFR level in real-time, correcting your pronunciation and grammar instantly.',
+        'structured_path': 'Structured Path',
+        'a1_to_c2': 'From A1 beginner to C2 mastery',
+        'voice_analysis': 'Voice Analysis',
+        'realtime_feedback': 'Real-time pronunciation feedback',
+        'features': 'Features',
+        'methodology': 'Methodology',
+        'pricing': 'Pricing',
+        'get_started': 'Get Started',
+        'speak_german': 'Speak German',
+        'fluently_ai': 'Fluently with AI',
+        'personalized': 'Personalized lessons based on CEFR standards (A1–C2). Learn smarter with an adaptive AI tutor that corrects your pronunciation and grammar in real-time.',
+        'why_deutschai': 'Why DeutschAI?',
+        'master_german': 'Master German with Intelligent Tools',
+        'platform_adapts': 'Our platform adapts to your pace, ensuring you master every aspect of the language efficiently—from complex grammar to natural pronunciation.',
+        'realtime_correction': 'Real-time Correction',
+        'instant_feedback': 'Instant feedback on your writing, grammar mistakes, and style nuances as you type.',
+        'ai_chat_partner': 'AI Chat Partner',
+        'practice_247': 'Practice conversations 24/7 with a responsive AI that speaks naturally and adapts to your level.',
+        'adaptive_drills': 'Adaptive Drills',
+        'smart_exercises': 'Smart exercises that evolve based on your strengths and weaknesses to optimize memory retention.',
+        'cefr_progress': 'CEFR Progress',
+        'visualize': 'Visualize your detailed journey from A1 beginner to C2 fluency with analytics.',
+        'path_fluency': 'Your Path to Fluency',
+        'break_down': 'We break down the complexity of German grammar into manageable, logical steps aligned with the Common European Framework of Reference for Languages.',
+        'build_habit': 'Build a Daily Habit',
+        'consistency': 'Consistency beats intensity. Committing to short, focused practice sessions every day is the most effective way to achieve fluency.',
+        'personalized_plan': 'Personalized Plan',
+        'daily_routine': 'Get a daily routine tailored to your goals, whether it\'s travel, business, or exam prep.',
+        'active_practice': 'Active Practice',
+        'engage': 'Engage in speaking, writing, and listening exercises that adapt to your performance.',
+        'structured_learning': 'STRUCTURED LEARNING',
+        'complete_journey': 'Your complete journey mapped out clearly.',
+        'help_center': 'Help Center',
+        'new_gpt4': 'New: GPT-4 Integration',
+        'quick_practice': 'Quick Practice',
+        'vocab_lab': 'Vocab Lab',
+        'vocab_lab_desc': 'Review and master words you\'ve learned.',
+        'chat_with_ahmad': 'Chat with Ahmad',
+        'chat_desc': 'Practice ordering a coffee in Berlin.',
+        'grammar_drill': 'Grammar Drill',
+        'grammar_drill_desc': 'Write a text and let AI check it.',
+        'voice_call': 'Voice Call',
+        'voice_call_desc': 'Speak directly with Ahmad by voice.',
+        'recent_activity': 'Recent Activity',
+        'view_all': 'View all',
+        'choose_topic': 'Choose a Conversation Topic',
+        'at_restaurant': 'At the Restaurant',
+        'hotel_checkin': 'Hotel Check-in',
+        'at_doctor': 'At the Doctor',
+        'job_interview': 'Job Interview',
+        'living_berlin': 'Living in Berlin',
+        'start_chatting': 'Start Chatting',
+        'writing_practice': 'Writing Practice',
+        'goal': 'Goal: 5–15 min',
+        'topic': 'Topic',
+        'grammar_focus': 'Grammar Focus',
+        'instructions': 'Write a text in German. DeutschAI will analyze your grammar, suggest improvements, and evaluate your vocabulary level.',
+        'write_text_placeholder': 'Write your German text here...',
+        'words': 'words',
+        'ready': 'Ready',
+        'my_vocabulary': 'My Vocabulary',
+        'search_words': 'Search words...',
+        'start_now': 'Start now →',
+        'no_activity': 'No activity yet. Your journey starts today!',
+        'ready_improve': 'Ready to improve your German? Let\'s keep going!',
+        'current_level': 'Current Level',
+        'german_level': 'German',
+        'completed': 'Completed',
+        'next_level': 'XP to next level',
+        'beginner': 'Beginner',
+        'advanced': 'Advanced',
+        'start_conversation': 'Start a conversation with Ahmad',
+        'practice_german': 'Practice your German naturally. Ahmad is ready to chat about any topic.',
+        'say_hello': 'Say hello 👋',
+        'great_choice': 'Great choice! Let\'s talk about',
+        'ahmad_preparing': 'Ahmad is preparing...',
+        'ahmad_thinking': 'Ahmad is thinking...',
+        'ahmad_speaking': 'Ahmad is speaking...',
+        'ahmad_listening': 'Just speak — Ahmad is always listening',
+        'ahmad_greeting': 'Hallo! Ich bin Ahmad, dein KI-Deutschlehrer. Sprich einfach mit mir — ich höre immer zu!',
+        'ahmad_tech': 'Ahmad – DeutschAI',
+    },
+    'ar': {
+        'dir': 'rtl',
+        'lang_code': 'ar',
+        'welcome': 'مرحباً',
+        'login': 'تسجيل الدخول',
+        'logout': 'تسجيل الخروج',
+        'signup': 'إنشاء حساب',
+        'signup_title': 'إنشاء حساب',
+        'login_title': 'مرحباً بعودتك',
+        'start_journey': 'ابدأ رحلتك لإتقان اللغة الألمانية اليوم.',
+        'first_name': 'الاسم الأول',
+        'last_name': 'اسم العائلة',
+        'current_german_level': 'مستوى الألماني الحالي',
+        'select_cefr_level': 'اختر مستوى CECRL',
+        'email': 'البريد الإلكتروني',
+        'password': 'كلمة المرور',
+        'confirm_password': 'تأكيد كلمة المرور',
+        'already_have_account': 'لديك حساب بالفعل؟',
+        'native_language': 'اللغة الأم',
+        'select_native_language': 'اختر لغتك الأم',
+        'correction_instructions': 'سيتم تقديم تصحيحات القواعد بلغتك الأم.',
+        'vocab_translation': 'سيتم عرض ترجمة المفردات بلغتك الأم.',
+        'dashboard': 'لوحة التحكم',
+        'chat': 'الدردشة',
+        'practice': 'التدريب',
+        'vocabulary': 'المفردات',
+        'profile': 'الملف الشخصي',
+        'settings': 'الإعدادات',
+        'account': 'الحساب',
+        'save_changes': 'حفظ التغييرات',
+        'cancel': 'إلغاء',
+        'learning_preferences': 'تفضيلات التعلم',
+        'target_cefr_level': 'مستوى CECRL المستهدف',
+        'profile_information': 'معلومات الملف الشخصي',
+        'update_photo': 'قم بتحديث صورتك الشخصية والتفاصيل.',
+        'change_photo': 'تغيير الصورة',
+        'remove': 'إزالة',
+        'supported_formats': 'الصيغ المدعومة: JPG، PNG. الحد الأقصى: 5 ميجابايت.',
+        'email_address': 'البريد الإلكتروني',
+        'my_vocabulary': 'مفرداتي',
+        'vocabulary_subtitle': 'الكلمات التي تحسنت فيها خلال جلسات التدريب على الكتابة.',
+        'search_words': 'البحث عن كلمات...',
+        'vocabulary_empty': 'قائمة مفرداتك فارغة',
+        'vocabulary_empty_desc': 'الكلمات التي ارتكبت فيها أخطاء ستظهر هنا تلقائياً بعد جلسات التدريب على الكتابة.',
+        'start_practicing': 'ابدأ التدريب',
+        'detailed_analysis': 'التحليل التفصيلي',
+        'overview': 'نظرة عامة',
+        'grammar': 'القواعد',
+        'vocabulary_level': 'المفردات',
+        'summary': 'ملخص',
+        'write_something': 'اكتب شيئاً للحصول على التحليل!',
+        'check_grammar': 'فحص القواعد',
+        'checking': 'جاري الفحص...',
+        'ready': 'جاهز',
+        'words': 'كلمات',
+        'ai_chat': 'الدردشة الذكية',
+        'type_message': 'اكتب رسالتك بالألمانية...',
+        'send': 'إرسال',
+        'speaking_practice': 'تدريب النطق',
+        'call_hans': 'الاتصال بهانس',
+        'end_call': 'إنهاء الاتصال',
+        'beginner': 'مبتدئ',
+        'elementary': 'ابتدائي',
+        'intermediate': 'متوسط',
+        'upper_intermediate': 'متوسط أعلى',
+        'advanced': 'متقدم',
+        'mastery': 'إتقان',
+        'level': 'مستوى',
+        'enter_details': 'أدخل بياناتك للوصول إلى دروسك.',
+        'forgot_password': 'نسيت كلمة المرور؟',
+        'signin': 'تسجيل الدخول',
+        'fluency_away': 'الإتقان مجرد محادثة بعيدة.',
+        'ai_learning': 'تعلم بمساعدة الذكاء الاصطناعي',
+        'next_gen': 'استمتع بجيل جديد من تعلم اللغات. يتكيف الذكاء الاصطناعي مع مستوى CECRL الخاص بك في الوقت الفعلي، ويصحح نطقك وقواعدك على الفور.',
+        'structured_path': 'مسار منظم',
+        'a1_to_c2': 'من المبتدئ A1 إلى الإتقان C2',
+        'voice_analysis': 'تحليل النطق',
+        'realtime_feedback': 'تعليقات فورية على النطق',
+        'features': 'المميزات',
+        'methodology': 'المنهجية',
+        'pricing': 'الأسعار',
+        'get_started': 'ابدأ الآن',
+        'speak_german': 'تحدث الألمانية',
+        'fluently_ai': 'بإتقان مع الذكاء الاصطناعي',
+        'personalized': 'دروس مخصصة基于CEFR标准（A1-C2）。通过自适应AI导师学习更聪明，实时纠正您的发音和语法。',
+        'why_deutschai': 'لماذا دوتش آي؟',
+        'master_german': 'أتقن الألمانية بأدوات ذكية',
+        'platform_adapts': 'تتكيف منصتنا مع وتيرتك، مما يضمن إتقان كل جانب من جوانب اللغة بكفاءة—from القواعد المعقدة إلى النطق الطبيعي.',
+        'realtime_correction': 'تصحيح فوري',
+        'instant_feedback': 'تعليقات فورية على كتابتك وأخطاء القواعد والتفاصيل النحوية أثناء الكتابة.',
+        'ai_chat_partner': 'شريك الدردشة بالذكاء الاصطناعي',
+        'practice_247': 'تدرب على المحادثات على مدار الساعة مع ذكاء اصطناعي يستجيب ويتحدث بشكل طبيعي ويتكيف مع مستواك.',
+        'adaptive_drills': 'تمارين تكيفية',
+        'smart_exercises': 'تمارين ذكية تتطور بناءً على نقاط قوتك وضعفك لتحسين الاحتفاظ بالذاكرة.',
+        'cefr_progress': 'تقدم CECFR',
+        'visualize': 'تصور رحلتك التفصيلية من المبتدئ A1 إلى الإتقان C2.',
+        'path_fluency': 'مسارك للإتقان',
+        'break_down': 'نقسم تعقيدات القواعد الألمانية إلى خطوات منطقية وقابلة للإدارة مصممة وفقاً للإطار الأوروبي المرجعي اللغوي.',
+        'build_habit': 'بناء عادة يومية',
+        'consistency': 'الاتساق يتفوق على الشدة. الالتزام بجلسات تدريب قصيرة ومركزة كل يوم هو الطريقة الأكثر فعالية لتحقيق الإتقان.',
+        'personalized_plan': 'خطة مخصصة',
+        'daily_routine': 'احصل على روتين يومي مصمم لأهدافك، سواء كان للسفر أو العمل أو التحضير للامتحانات.',
+        'active_practice': 'تدريب نشط',
+        'engage': 'شارك في تمارين التحدث والكتابة والاستماع التي تتكيف مع أدائك.',
+        'structured_learning': 'تعلم منظم',
+        'complete_journey': 'رحلتك الكاملة مصورة بوضوح.',
+        'help_center': 'مركز المساعدة',
+        'new_gpt4': 'جديد: تكامل GPT-4',
+        'quick_practice': 'تدريب سريع',
+        'vocab_lab': 'مختبر المفردات',
+        'vocab_lab_desc': 'راجع وأتقن الكلمات التي تعلمتها.',
+        'chat_with_ahmad': 'دردشة مع أحمد',
+        'chat_desc': 'تدرب على طلب قهوة في برلين.',
+        'grammar_drill': 'تمارين القواعد',
+        'grammar_drill_desc': 'اكتب نصاً ودع الذكاء الاصطناعي يفحصه.',
+        'voice_call': 'مكالمة صوتية',
+        'voice_call_desc': 'تحدث مباشرة مع أحمد بالصوت.',
+        'recent_activity': 'النشاط الأخير',
+        'view_all': 'عرض الكل',
+        'choose_topic': 'اختر موضوع المحادثة',
+        'at_restaurant': 'في المطعم',
+        'hotel_checkin': 'تسجيل الدخول للفندق',
+        'at_doctor': 'عند الطبيب',
+        'job_interview': 'مقابلة عمل',
+        'living_berlin': 'العيش في برلين',
+        'start_chatting': 'ابدأ الدردشة',
+        'writing_practice': 'تدريب الكتابة',
+        'goal': 'الهدف: 5-15 دقيقة',
+        'topic': 'الموضوع',
+        'grammar_focus': 'تركيز القواعد',
+        'instructions': 'اكتب نصاً بالألمانية. سيقوم DeutschAI بتحليل القواعد واقتراح التحسينات وتقييم مستوى مفرداتك.',
+        'write_text_placeholder': 'اكتب نصك الألماني هنا...',
+        'words': 'كلمات',
+        'ready': 'جاهز',
+        'my_vocabulary': 'مفرداتي',
+        'search_words': 'البحث عن كلمات...',
+        'start_now': 'ابدأ الآن ←',
+        'no_activity': 'لا يوجد نشاط بعد. رحلتك تبدأ اليوم!',
+        'ready_improve': 'مستعد لتحسين الألمانيتك؟ هيا نستمر!',
+        'current_level': 'المستوى الحالي',
+        'german_level': 'الألمانية',
+        'completed': 'مكتمل',
+        'next_level': 'XP للمستوى التالي',
+        'beginner': 'مبتدئ',
+        'advanced': 'متقدم',
+        'start_conversation': 'ابدأ محادثة مع أحمد',
+        'practice_german': 'تدرب على الألمانية بشكل طبيعي. أحمد مستعد للدردشة حول أي موضوع.',
+        'say_hello': 'قل مرحباً 👋',
+        'great_choice': 'اختيار رائع! دعنا نتحدث عن',
+        'ahmad_preparing': 'أحمد يستعد...',
+        'ahmad_thinking': 'أحمد يفكر...',
+        'ahmad_speaking': 'أحمد يتحدث...',
+        'ahmad_listening': 'تحدث فقط — أحمد دائماً يستمع',
+        'ahmad_greeting': 'Hallo! Ich bin Ahmad, dein KI-Deutschlehrer. Sprich einfach mit mir — ich höre immer zu!',
+        'ahmad_tech': 'أحمد - DeutschAI',
+    }
+}
+
+def get_translations(lang):
+    return TRANSLATIONS.get(lang, TRANSLATIONS['en'])
+
+def get_lang_dir(lang):
+    return TRANSLATIONS.get(lang, TRANSLATIONS['en']).get('dir', 'ltr')
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'deutschai-secret-key-x7k2p9m4q1r8v5w3'
@@ -37,6 +358,7 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
     german_level = db.Column(db.String(20), nullable=False)
+    native_language = db.Column(db.String(10), nullable=False, default='en')
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     progress = db.Column(db.Integer, default=0)
@@ -99,11 +421,15 @@ def after_request(response):
 
 @app.context_processor
 def inject_user():
-    return dict(user=current_user)
+    lang = current_user.native_language if current_user.is_authenticated else 'en'
+    return dict(user=current_user, translations=get_translations(lang), native_lang=lang, lang_dir=get_lang_dir(lang))
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    lang = request.args.get('lang', 'en')
+    if lang not in ['en', 'ar']:
+        lang = 'en'
+    return render_template('index.html', translations=get_translations(lang), native_lang=lang, lang_dir=get_lang_dir(lang))
 
 @app.route('/debug/session')
 def debug_session():
@@ -124,10 +450,14 @@ def debug_session():
 def signup():
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
+    lang = request.args.get('lang', 'en')
+    if lang not in ['en', 'ar']:
+        lang = 'en'
     if request.method == 'POST':
         first_name = request.form.get('first_name')
         last_name = request.form.get('last_name')
         german_level = request.form.get('german_level')
+        native_language = request.form.get('native_language', 'en')
         email = request.form.get('email')
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
@@ -142,17 +472,20 @@ def signup():
             return redirect(url_for('signup'))
 
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-        new_user = User(first_name=first_name, last_name=last_name, german_level=german_level, email=email, password=hashed_password)
+        new_user = User(first_name=first_name, last_name=last_name, german_level=german_level, native_language=native_language, email=email, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
         flash('Account created successfully! Please log in.', 'success')
         return redirect(url_for('login'))
-    return render_template('signup.html')
+    return render_template('signup.html', translations=get_translations(lang), native_lang=lang, lang_dir=get_lang_dir(lang))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
+    lang = request.args.get('lang', 'en')
+    if lang not in ['en', 'ar']:
+        lang = 'en'
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
@@ -165,7 +498,7 @@ def login():
             return redirect(url_for('dashboard'))
         else:
             flash('Login unsuccessful. Please check email and password.', 'danger')
-    return render_template('login.html')
+    return render_template('login.html', translations=get_translations(lang), native_lang=lang, lang_dir=get_lang_dir(lang))
 
 @app.route('/logout')
 def logout():
@@ -191,8 +524,18 @@ def chat_api():
         response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
         return response
     
+    # Debug: Print session info to console
+    print(f"\n=== /chat/api called ===")
+    print(f"Cookies: {list(request.cookies.keys())}")
+    print(f"Session cookie: {request.cookies.get('session', 'NOT SET')[:50] if request.cookies.get('session') else 'NOT SET'}")
+    print(f"User authenticated: {current_user.is_authenticated}")
+    print(f"Request method: {request.method}")
+    print(f"Is secure: {request.is_secure}")
+    print(f"========================\n")
+    
     # Debug: Check session
     if not current_user.is_authenticated:
+        print("DEBUG: User not authenticated, returning 401")
         return jsonify({
             "error": "Unauthorized",
             "debug": {
@@ -202,41 +545,50 @@ def chat_api():
             }
         }), 401
     
-    data = request.json
-    user_message = data.get('message')
+    print("DEBUG: User IS authenticated, continuing...")
     
-    if not user_message:
-        return jsonify({"error": "No message provided"}), 400
+    try:
+        data = request.json
+        user_message = data.get('message')
+        
+        if not user_message:
+            print("DEBUG: No message provided")
+            return jsonify({"error": "No message provided"}), 400
 
-    api_key = "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"
-    
-    response = requests.post(
-        url="https://openrouter.ai/api/v1/chat/completions",
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "HTTP-Referer": "https://deutchai.tayba.blog",
-            "X-Title": "DeutschAI",
-        },
-        data=json.dumps({
-            "model": "openai/gpt-3.5-turbo", # Changed to a more common model since gpt-5.2 is not a standard one yet
-            "messages": [
-                {
-                    "role": "system",
-                    "content": f"You are Hans, a helpful German language tutor. The user's German level is {current_user.german_level}. Please speak primarily in German and encourage the user. Keep your responses concise and engaging."
-                },
-                {
-                    "role": "user",
-                    "content": user_message
-                }
-            ]
-        })
-    )
-    
-    if response.status_code == 200:
-        log_activity(current_user, 'chat', 'Konversation mit Hans geführt', 10)
-        return jsonify(response.json())
-    else:
-        return jsonify({"error": "Failed to get response from AI"}), response.status_code
+        print(f"DEBUG: Calling AI with message: {user_message[:50]}...")
+        
+        api_key = "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"
+        
+        response = requests.post(
+            url="https://openrouter.ai/api/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "HTTP-Referer": "https://deutchai.tayba.blog",
+                "X-Title": "DeutschAI",
+            },
+            data=json.dumps({
+                "model": "openai/gpt-3.5-turbo",
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": f"You are Hans, a helpful German language tutor. The user's German level is {current_user.german_level}. Please speak primarily in German and encourage the user. Keep your responses concise and engaging."
+                    },
+                    {
+                        "role": "user",
+                        "content": user_message
+                    }
+                ]
+            })
+        )
+        
+        if response.status_code == 200:
+            log_activity(current_user, 'chat', 'Konversation mit Hans geführt', 10)
+            return jsonify(response.json())
+        else:
+            return jsonify({"error": "Failed to get response from AI"}), response.status_code
+    except Exception as e:
+        print(f"DEBUG ERROR: {e}")
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/practice')
 @login_required
@@ -265,10 +617,15 @@ def practice_api():
     if not user_text:
         return jsonify({"error": "No text provided"}), 400
 
-    api_key = "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"
+    api_key = "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"
+    
+    native_lang = current_user.native_language
+    lang_instruction = "in English" if native_lang == "en" else "in Arabic"
     
     system_prompt = f"""
     You are an expert German grammar checker. The user's level is {current_user.german_level}.
+    The user's native language is: {"English" if native_lang == "en" else "Arabic"}.
+    
     Analyze the following German text for:
     1. Grammar errors
     2. Spelling mistakes
@@ -276,16 +633,16 @@ def practice_api():
     4. CEFR level of the vocabulary used
     5. An overall grammar score (0-100%)
 
-    IMPORTANT: Your response MUST be in JSON format with the following structure:
+    IMPORTANT: Your response MUST be in JSON format with the following structure. All text fields must be {lang_instruction}:
     {{
         "score": number,
         "vocab_level": "string (A1-C2)",
-        "analysis_summary": "string in English",
+        "analysis_summary": "string {lang_instruction}",
         "corrections": [
             {{
                 "original": "string",
                 "correction": "string",
-                "explanation": "string in English",
+                "explanation": "string {lang_instruction}",
                 "type": "grammar" | "spelling" | "style"
             }}
         ]
@@ -331,6 +688,13 @@ def call_api():
     if request.method == 'OPTIONS':
         return '', 200
     
+    # Debug: Print session info to console
+    print(f"\n=== /call/api called ===")
+    print(f"Cookies: {list(request.cookies.keys())}")
+    print(f"Session cookie: {request.cookies.get('session', 'NOT SET')[:50] if request.cookies.get('session') else 'NOT SET'}")
+    print(f"User authenticated: {current_user.is_authenticated}")
+    print(f"========================\n")
+    
     # Debug: Check session
     if not current_user.is_authenticated:
         from flask import session
@@ -350,7 +714,7 @@ def call_api():
     if not messages:
         return jsonify({"error": "No messages provided"}), 400
 
-    api_key = "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"
+    api_key = "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"
 
     system_message = {
         "role": "system",
@@ -384,6 +748,7 @@ def setting():
         current_user.last_name = request.form.get('last_name')
         current_user.email = request.form.get('email')
         current_user.german_level = request.form.get('cefr_level')
+        current_user.native_language = request.form.get('native_language', 'en')
         
         try:
             db.session.commit()

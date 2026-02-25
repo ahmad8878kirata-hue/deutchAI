@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ translations.lang_code }}" dir="{{ lang_dir }}">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>DeutschAI - Voice Call</title>
+    <title>DeutschAI - {{ translations.speaking_practice }}</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200..800&display=swap"
@@ -123,6 +123,11 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: 2px;
         }
+        {% if lang_dir == 'rtl' %}
+        body { font-weight: 600 !important; }
+        h1, h2, h3, h4, h5, h6 { font-weight: 700 !important; }
+        .font-bold { font-weight: 800 !important; }
+        {% endif %}
     </style>
 </head>
 
@@ -130,9 +135,9 @@
 
     <!-- Back link -->
     <a href="/dashboard"
-        class="fixed top-6 left-6 z-50 flex items-center gap-2 text-white/50 hover:text-white text-sm font-medium transition-colors">
+        class="fixed top-6 {% if lang_dir == 'rtl' %}right-6 left-auto{% else %}left-6 right-auto{% endif %} z-50 flex items-center gap-2 text-white/50 hover:text-white text-sm font-medium transition-colors">
         <span class="material-symbols-outlined text-[20px]">arrow_back</span>
-        Dashboard
+        {{ translations.dashboard }}
     </a>
 
     <!-- Phone Screen -->
@@ -157,7 +162,7 @@
         <!-- Call Label -->
         <div class="flex flex-col items-center pt-6 pb-4 px-6 gap-1">
             <p class="text-white/30 text-xs font-bold uppercase tracking-widest">Voice Call</p>
-            <h1 class="text-white text-2xl font-extrabold tracking-tight">Hans – DeutschAI</h1>
+            <h1 class="text-white text-2xl font-extrabold tracking-tight">{{ translations.ahmad_tech }}</h1>
             <div id="status-label" class="flex items-center gap-1.5 mt-1">
                 <span class="size-2 rounded-full bg-emerald-400 animate-pulse"></span>
                 <p class="text-emerald-400 text-xs font-bold">Starting...</p>
@@ -188,7 +193,7 @@
         <!-- Transcript Area -->
         <div id="transcript" class="flex-1 flex flex-col gap-3 px-4 py-3 overflow-y-auto min-h-0">
             <div id="placeholder" class="flex justify-center py-4">
-                <p class="text-white/20 text-xs text-center">Just speak — Hans is always listening</p>
+                <p class="text-white/20 text-xs text-center">{{ translations.ahmad_listening }}</p>
             </div>
         </div>
 
@@ -306,7 +311,7 @@
         function clearInterim() { if (interimEl) { interimEl.remove(); interimEl = null; } }
 
         async function sendToAI(userText) {
-            setStatus('thinking', 'Hans is thinking...');
+            setStatus('thinking', '{{ translations.ahmad_thinking }}');
             conversationHistory.push({ role: 'user', content: userText });
             try {
 const res = await fetch('/call/api', {
@@ -340,7 +345,7 @@ const res = await fetch('/call/api', {
             const voices = window.speechSynthesis.getVoices();
             const de = voices.find(v => v.lang.startsWith('de'));
             if (de) utt.voice = de;
-            utt.onstart = () => { ripple.classList.remove('hidden'); soundwave.classList.remove('hidden'); setStatus('speaking', 'Hans is speaking...'); };
+            utt.onstart = () => { ripple.classList.remove('hidden'); soundwave.classList.remove('hidden'); setStatus('speaking', '{{ translations.ahmad_speaking }}'); };
             utt.onend = () => { ripple.classList.add('hidden'); soundwave.classList.add('hidden'); isAISpeaking = false; setStatus('listening', 'Listening...'); restartListening(); };
             utt.onerror = () => { ripple.classList.add('hidden'); soundwave.classList.add('hidden'); isAISpeaking = false; restartListening(); };
             window.speechSynthesis.speak(utt);
@@ -393,7 +398,7 @@ const res = await fetch('/call/api', {
         window.addEventListener('load', () => {
             initRecognition();
             setTimeout(() => {
-                const greeting = 'Hallo! Ich bin Hans, dein KI-Deutschlehrer. Sprich einfach mit mir — ich höre immer zu!';
+                const greeting = '{{ translations.ahmad_greeting }}';
                 addMessage('ai', greeting);
                 speakText(greeting);
             }, 800);

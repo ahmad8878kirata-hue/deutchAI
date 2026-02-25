@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ translations.lang_code }}" dir="{{ lang_dir }}">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>DeutschAI - Dashboard</title>
+    <title>DeutschAI - {{ translations.dashboard }}</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
@@ -38,6 +38,17 @@
         #mobile-sidebar {
             transition: transform 0.3s ease;
         }
+        {% if lang_dir == 'rtl' %}
+        body {
+            font-weight: 600 !important;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700 !important;
+        }
+        .font-bold {
+            font-weight: 800 !important;
+        }
+        {% endif %}
     </style>
 </head>
 
@@ -68,32 +79,32 @@
         <nav class="flex flex-col gap-1 p-4 flex-1">
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-primary bg-red-50"
                 href="/dashboard">
-                <span class="material-symbols-outlined text-[20px]">dashboard</span> Dashboard
+                <span class="material-symbols-outlined text-[20px]">{{ translations.dashboard }}</span> {{ translations.dashboard }}
             </a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-muted hover:text-text-main hover:bg-slate-50 transition-colors"
                 href="/chat">
-                <span class="material-symbols-outlined text-[20px]">forum</span> Chat with Hans
+                <span class="material-symbols-outlined text-[20px]">forum</span> {{ translations.chat }}
             </a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-muted hover:text-text-main hover:bg-slate-50 transition-colors"
                 href="/practice">
-                <span class="material-symbols-outlined text-[20px]">psychology</span> Practice
+                <span class="material-symbols-outlined text-[20px]">psychology</span> {{ translations.practice }}
             </a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-muted hover:text-text-main hover:bg-slate-50 transition-colors"
                 href="/vocabulary">
-                <span class="material-symbols-outlined text-[20px]">menu_book</span> Vocabulary
+                <span class="material-symbols-outlined text-[20px]">menu_book</span> {{ translations.vocabulary }}
             </a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-muted hover:text-text-main hover:bg-slate-50 transition-colors"
                 href="/call">
-                <span class="material-symbols-outlined text-[20px]">call</span> Voice Call
+                <span class="material-symbols-outlined text-[20px]">call</span> {{ translations.speaking_practice }}
             </a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-muted hover:text-text-main hover:bg-slate-50 transition-colors"
                 href="/setting">
-                <span class="material-symbols-outlined text-[20px]">manage_accounts</span> Profile
+                <span class="material-symbols-outlined text-[20px]">manage_accounts</span> {{ translations.profile }}
             </a>
         </nav>
         <a href="/logout"
             class="flex items-center gap-3 px-8 py-5 border-t border-border-light text-sm font-medium text-red-500 hover:text-red-700 transition-colors">
-            <span class="material-symbols-outlined text-[20px]">logout</span> Log Out
+            <span class="material-symbols-outlined text-[20px]">{{ translations.logout }}</span> {{ translations.logout }}
         </a>
     </div>
 
@@ -102,17 +113,17 @@
             <div class="flex items-center gap-10">
                 <a class="text-2xl font-extrabold text-primary tracking-tight" href="/">DeutschAI</a>
                 <nav class="hidden md:flex items-center gap-6">
-                    <a class="text-sm font-bold text-text-main px-2 py-1" href="/dashboard">Dashboard</a>
+                    <a class="text-sm font-bold text-text-main px-2 py-1" href="/dashboard">{{ translations.dashboard }}</a>
                     <a class="text-sm font-medium text-text-muted hover:text-text-main transition-colors px-2 py-1"
-                        href="/chat">Chat</a>
+                        href="/chat">{{ translations.chat }}</a>
                     <a class="text-sm font-medium text-text-muted hover:text-text-main transition-colors px-2 py-1"
-                        href="/practice">Practice</a>
+                        href="/practice">{{ translations.practice }}</a>
                     <a class="text-sm font-medium text-text-muted hover:text-text-main transition-colors px-2 py-1"
-                        href="/vocabulary">Vocabulary</a>
+                        href="/vocabulary">{{ translations.vocabulary }}</a>
                     <a class="text-sm font-medium text-text-muted hover:text-text-main transition-colors px-2 py-1"
-                        href="/setting">Profile</a>
+                        href="/setting">{{ translations.profile }}</a>
                     <a class="text-sm font-medium text-text-muted hover:text-text-main transition-colors px-2 py-1"
-                        href="/logout">Log Out</a>
+                        href="/logout">{{ translations.logout }}</a>
                 </nav>
             </div>
             <div class="flex items-center gap-3">
@@ -135,9 +146,9 @@
             <!-- Welcome Header -->
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
                 <div class="flex flex-col gap-2">
-                    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-text-main">Welcome, {{
+                    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-text-main">{{ translations.welcome }}, {{
                         user.first_name }}!</h2>
-                    <p class="text-text-muted text-lg font-medium">Ready to improve your German? Let's keep going!</p>
+                    <p class="text-text-muted text-lg font-medium">{{ translations.start_journey }}</p>
                 </div>
             </div>
 
@@ -150,13 +161,13 @@
                             {{ user.german_level }}
                         </div>
                         <div>
-                            <p class="text-text-muted text-xs font-semibold uppercase tracking-wider">Current Level</p>
-                            <p class="text-text-main font-bold text-lg">{{ user.german_level }} German</p>
+                            <p class="text-text-muted text-xs font-semibold uppercase tracking-wider">{{ translations.current_level }}</p>
+                            <p class="text-text-main font-bold text-lg">{{ user.german_level }} {{ translations.german_level }}</p>
                         </div>
                     </div>
                     <div class="text-right">
                         <p class="text-primary font-bold text-2xl">{{ user.progress }}%</p>
-                        <p class="text-text-muted text-xs font-medium">Completed</p>
+                        <p class="text-text-muted text-xs font-medium">{{ translations.completed }}</p>
                     </div>
                 </div>
                 <div class="w-full bg-slate-100 rounded-full h-4 overflow-hidden">
@@ -231,7 +242,7 @@
                 <div class="xl:col-span-2 flex flex-col gap-5">
                     <h3 class="text-text-main text-lg font-bold flex items-center gap-2">
                         <span class="material-symbols-outlined text-primary">bolt</span>
-                        Quick Practice
+                        {{ translations.quick_practice }}
                     </h3>
                     <div class="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 gap-4">
                         <button
@@ -243,9 +254,8 @@
                             </div>
                             <div>
                                 <h4 class="text-text-main font-bold mb-1 group-hover:text-blue-600 transition-colors">
-                                    Vocab Lab</h4>
-                                <p class="text-text-muted text-xs leading-relaxed">Review and master words you've
-                                    learned.</p>
+                                    {{ translations.vocab_lab }}</h4>
+                                <p class="text-text-muted text-xs leading-relaxed">{{ translations.vocab_lab_desc }}</p>
                             </div>
                         </button>
                         <button
@@ -257,9 +267,8 @@
                             </div>
                             <div>
                                 <h4 class="text-text-main font-bold mb-1 group-hover:text-purple-600 transition-colors">
-                                    Chat with Hans</h4>
-                                <p class="text-text-muted text-xs leading-relaxed">Practice ordering a coffee in Berlin.
-                                </p>
+                                    {{ translations.chat_with_ahmad }}</h4>
+                                <p class="text-text-muted text-xs leading-relaxed">{{ translations.chat_desc }}</p>
                             </div>
                         </button>
                         <button
@@ -271,8 +280,8 @@
                             </div>
                             <div>
                                 <h4 class="text-text-main font-bold mb-1 group-hover:text-orange-600 transition-colors">
-                                    Grammar Drill</h4>
-                                <p class="text-text-muted text-xs leading-relaxed">Write a text and let AI check it.</p>
+                                    {{ translations.grammar_drill }}</h4>
+                                <p class="text-text-muted text-xs leading-relaxed">{{ translations.grammar_drill_desc }}</p>
                             </div>
                         </button>
                         <button
@@ -284,8 +293,8 @@
                             </div>
                             <div>
                                 <h4 class="text-text-main font-bold mb-1 group-hover:text-rose-600 transition-colors">
-                                    Voice Call</h4>
-                                <p class="text-text-muted text-xs leading-relaxed">Speak directly with Hans by voice.
+                                    {{ translations.voice_call }}</h4>
+                                <p class="text-text-muted text-xs leading-relaxed">{{ translations.voice_call_desc }}
                                 </p>
                             </div>
                         </button>
@@ -295,7 +304,7 @@
                 <!-- Recent Activity -->
                 <div class="flex flex-col gap-5">
                     <div class="flex items-center justify-between">
-                        <h3 class="text-text-main text-lg font-bold">Recent Activity</h3>
+                        <h3 class="text-text-main text-lg font-bold">{{ translations.recent_activity }}</h3>
                         <a class="text-primary text-sm font-bold hover:underline" href="/vocabulary">View all</a>
                     </div>
                     <div class="flex flex-col gap-3">

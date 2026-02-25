@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ translations.lang_code }}" dir="{{ lang_dir }}">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>DeutschAI - Settings Page</title>
+    <title>DeutschAI - {{ translations.settings }}</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200..800&amp;display=swap"
         rel="stylesheet" />
@@ -68,6 +68,17 @@
         #mobile-sidebar {
             transition: transform 0.3s ease;
         }
+        {% if lang_dir == 'rtl' %}
+        body {
+            font-weight: 600 !important;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700 !important;
+        }
+        .font-bold {
+            font-weight: 800 !important;
+        }
+        {% endif %}
     </style>
 </head>
 
@@ -91,19 +102,19 @@
         </div>
         <nav class="flex flex-col gap-1 p-4 flex-1">
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/dashboard"><span class="material-symbols-outlined text-[20px]">dashboard</span> Dashboard</a>
+                href="/dashboard"><span class="material-symbols-outlined text-[20px]">dashboard</span> {{ translations.dashboard }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/chat"><span class="material-symbols-outlined text-[20px]">forum</span> Chat</a>
+                href="/chat"><span class="material-symbols-outlined text-[20px]">forum</span> {{ translations.chat }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/practice"><span class="material-symbols-outlined text-[20px]">psychology</span> Practice</a>
+                href="/practice"><span class="material-symbols-outlined text-[20px]">psychology</span> {{ translations.practice }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/vocabulary"><span class="material-symbols-outlined text-[20px]">menu_book</span> Vocabulary</a>
+                href="/vocabulary"><span class="material-symbols-outlined text-[20px]">menu_book</span> {{ translations.vocabulary }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-primary bg-red-50"
-                href="/setting"><span class="material-symbols-outlined text-[20px]">manage_accounts</span> Profile</a>
+                href="/setting"><span class="material-symbols-outlined text-[20px]">manage_accounts</span> {{ translations.profile }}</a>
         </nav>
         <a href="/logout"
             class="flex items-center gap-3 px-8 py-5 border-t border-border-color text-sm font-medium text-red-500"><span
-                class="material-symbols-outlined text-[20px]">logout</span> Log Out</a>
+                class="material-symbols-outlined text-[20px]">logout</span> {{ translations.logout }}</a>
     </div>
     <header class="bg-surface border-b border-border-color sticky top-0 z-40">
         <div class="max-w-[1600px] mx-auto px-4 lg:px-8 h-16 flex items-center justify-between">
@@ -119,17 +130,17 @@
             </div>
             <nav class="hidden md:flex items-center gap-1">
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                    href="/dashboard">Dashboard</a>
+                    href="/dashboard">{{ translations.dashboard }}</a>
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                    href="/chat">Chat</a>
+                    href="/chat">{{ translations.chat }}</a>
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                    href="/practice">Practice</a>
+                    href="/practice">{{ translations.practice }}</a>
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                    href="/vocabulary">Vocabulary</a>
+                    href="/vocabulary">{{ translations.vocabulary }}</a>
                 <a class="text-primary bg-red-50 px-4 py-2 rounded-lg text-sm font-bold transition-colors"
-                    href="/setting">Profile</a>
+                    href="/setting">{{ translations.profile }}</a>
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                    href="/logout">Log Out</a>
+                    href="/logout">{{ translations.logout }}</a>
             </nav>
             <div class="flex items-center gap-3">
                 <button
@@ -160,15 +171,15 @@
                 <div class="flex items-center gap-2 text-xs font-medium text-text-secondary">
                     <span>Account</span>
                     <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-                    <span>Settings</span>
+                    <span>{{ translations.settings }}</span>
                 </div>
                 <div class="flex flex-wrap items-baseline justify-between gap-4">
-                    <h1 class="text-2xl lg:text-3xl font-bold tracking-tight text-text-main">Settings</h1>
+                    <h1 class="text-2xl lg:text-3xl font-bold tracking-tight text-text-main">{{ translations.settings }}</h1>
                 </div>
             </div>
             <div class="bg-surface rounded-xl shadow-soft border border-border-color overflow-hidden">
                 <div class="p-6 lg:p-8 border-b border-border-color">
-                    <h3 class="text-lg font-bold text-text-main mb-1">Profile Information</h3>
+                    <h3 class="text-lg font-bold text-text-main mb-1">{{ translations.profile_information }}</h3>
                     <p class="text-sm text-text-secondary mb-6">Update your photo and personal details.</p>
                     <div class="flex flex-col gap-8">
                         <div class="flex items-center gap-6">
@@ -217,11 +228,29 @@
                     </div>
                 </div>
                 <div class="p-6 lg:p-8 border-b border-border-color">
-                    <h3 class="text-lg font-bold text-text-main mb-1">Learning Preferences</h3>
+                    <h3 class="text-lg font-bold text-text-main mb-1">{{ translations.learning_preferences }}</h3>
                     <p class="text-sm text-text-secondary mb-6">Customize your CEFR level and daily practice goals.</p>
                     <div class="space-y-6">
                         <div class="space-y-3">
-                            <label class="text-sm font-semibold text-text-main">Target CEFR Level</label>
+                            <label class="text-sm font-semibold text-text-main">{{ translations.native_language }}</label>
+                            <p class="text-xs text-text-secondary mb-2">Grammar corrections and vocabulary translations will be shown in your native language.</p>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="cursor-pointer group relative">
+                                    <input class="peer sr-only" name="native_language" type="radio" value="en" {% if user.native_language=='en' %}checked{% endif %} />
+                                    <div class="p-3 text-center rounded-lg border border-border-color bg-white peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary hover:border-slate-300 transition-all">
+                                        <span class="font-bold text-sm block">English</span>
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer group relative">
+                                    <input class="peer sr-only" name="native_language" type="radio" value="ar" {% if user.native_language=='ar' %}checked{% endif %} />
+                                    <div class="p-3 text-center rounded-lg border border-border-color bg-white peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary hover:border-slate-300 transition-all">
+                                        <span class="font-bold text-sm block">العربية</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <label class="text-sm font-semibold text-text-main">{{ translations.target_cefr_level }}</label>
                             <div class="grid grid-cols-3 sm:grid-cols-6 gap-3">
                                 <label class="cursor-pointer group relative">
                                     <input class="peer sr-only" name="cefr_level" type="radio" value="A1" {% if
@@ -290,7 +319,7 @@
                         <button
                             class="flex-1 sm:flex-none px-6 py-2.5 rounded-lg bg-primary hover:bg-primary-hover text-white font-semibold text-sm transition-all shadow-lg shadow-primary/20 active:translate-y-px"
                             type="submit">
-                            Save Changes
+                            {{ translations.save_changes }}
                         </button>
                     </div>
                 </div>

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ translations.lang_code }}" dir="{{ lang_dir }}">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>DeutschAI - Vocabulary</title>
+    <title>DeutschAI - {{ translations.vocabulary }}</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
@@ -34,6 +34,11 @@
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         #mobile-sidebar { transition: transform 0.3s ease; }
+        {% if lang_dir == 'rtl' %}
+        body { font-weight: 600 !important; }
+        h1, h2, h3, h4, h5, h6 { font-weight: 700 !important; }
+        .font-bold { font-weight: 800 !important; }
+        {% endif %}
     </style>
 </head>
 
@@ -57,19 +62,19 @@
         </div>
         <nav class="flex flex-col gap-1 p-4 flex-1">
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/dashboard"><span class="material-symbols-outlined text-[20px]">dashboard</span> Dashboard</a>
+                href="/dashboard"><span class="material-symbols-outlined text-[20px]">dashboard</span> {{ translations.dashboard }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/chat"><span class="material-symbols-outlined text-[20px]">forum</span> Chat</a>
+                href="/chat"><span class="material-symbols-outlined text-[20px]">forum</span> {{ translations.chat }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/practice"><span class="material-symbols-outlined text-[20px]">psychology</span> Practice</a>
+                href="/practice"><span class="material-symbols-outlined text-[20px]">psychology</span> {{ translations.practice }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-primary bg-red-50"
-                href="/vocabulary"><span class="material-symbols-outlined text-[20px]">menu_book</span> Vocabulary</a>
+                href="/vocabulary"><span class="material-symbols-outlined text-[20px]">menu_book</span> {{ translations.vocabulary }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/setting"><span class="material-symbols-outlined text-[20px]">manage_accounts</span> Profile</a>
+                href="/setting"><span class="material-symbols-outlined text-[20px]">manage_accounts</span> {{ translations.profile }}</a>
         </nav>
         <a href="/logout"
             class="flex items-center gap-3 px-8 py-5 border-t border-border-color text-sm font-medium text-red-500"><span
-                class="material-symbols-outlined text-[20px]">logout</span> Log Out</a>
+                class="material-symbols-outlined text-[20px]">logout</span> {{ translations.logout }}</a>
     </div>
 
     <header class="bg-surface border-b border-border-color sticky top-0 z-30">
@@ -87,17 +92,17 @@
             </div>
             <nav class="hidden md:flex items-center gap-1">
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                    href="/dashboard">Dashboard</a>
+                    href="/dashboard">{{ translations.dashboard }}</a>
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                    href="/chat">Chat</a>
+                    href="/chat">{{ translations.chat }}</a>
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                    href="/practice">Practice</a>
+                    href="/practice">{{ translations.practice }}</a>
                 <a class="text-primary bg-red-50 px-4 py-2 rounded-lg text-sm font-bold transition-colors"
-                    href="/vocabulary">Vocabulary</a>
+                    href="/vocabulary">{{ translations.vocabulary }}</a>
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                    href="/setting">Profile</a>
+                    href="/setting">{{ translations.profile }}</a>
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                    href="/logout">Log Out</a>
+                    href="/logout">{{ translations.logout }}</a>
             </nav>
             <div class="flex items-center gap-3">
                 <div
@@ -122,7 +127,7 @@
                         <span class="material-symbols-outlined text-[14px]">chevron_right</span>
                         <span>Vocabulary</span>
                     </div>
-                    <h1 class="text-2xl lg:text-3xl font-bold tracking-tight text-text-main">My Vocabulary</h1>
+                    <h1 class="text-2xl lg:text-3xl font-bold tracking-tight text-text-main">{{ translations.my_vocabulary }}</h1>
                     <p class="text-slate-500 text-sm mt-1">Words you've improved during your writing practice sessions.
                     </p>
                 </div>
@@ -131,7 +136,7 @@
                         class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
                     <input id="search-input"
                         class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border-color bg-white text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all placeholder:text-slate-400"
-                        placeholder="Search words..." type="text" oninput="filterWords()" />
+                        placeholder="{{ translations.search_words }}" type="text" oninput="filterWords()" />
                 </div>
             </div>
 

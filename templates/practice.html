@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ translations.lang_code }}" dir="{{ lang_dir }}">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>DeutschAI - Writing Practice</title>
+    <title>DeutschAI - {{ translations.practice }}</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200..800&display=swap"
         rel="stylesheet" />
@@ -36,6 +36,11 @@
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         .error-underline { text-decoration: underline wavy #ea2a33; text-decoration-thickness: 2px; text-underline-offset: 4px; }
         #mobile-sidebar { transition: transform 0.3s ease; }
+        {% if lang_dir == 'rtl' %}
+        body { font-weight: 600 !important; }
+        h1, h2, h3, h4, h5, h6 { font-weight: 700 !important; }
+        .font-bold { font-weight: 800 !important; }
+        {% endif %}
     </style>
 </head>
 
@@ -59,19 +64,19 @@
         </div>
         <nav class="flex flex-col gap-1 p-4 flex-1">
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/dashboard"><span class="material-symbols-outlined text-[20px]">dashboard</span> Dashboard</a>
+                href="/dashboard"><span class="material-symbols-outlined text-[20px]">dashboard</span> {{ translations.dashboard }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/chat"><span class="material-symbols-outlined text-[20px]">forum</span> Chat</a>
+                href="/chat"><span class="material-symbols-outlined text-[20px]">forum</span> {{ translations.chat }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-primary bg-red-50"
-                href="/practice"><span class="material-symbols-outlined text-[20px]">psychology</span> Practice</a>
+                href="/practice"><span class="material-symbols-outlined text-[20px]">psychology</span> {{ translations.practice }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/vocabulary"><span class="material-symbols-outlined text-[20px]">menu_book</span> Vocabulary</a>
+                href="/vocabulary"><span class="material-symbols-outlined text-[20px]">menu_book</span> {{ translations.vocabulary }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/setting"><span class="material-symbols-outlined text-[20px]">manage_accounts</span> Profile</a>
+                href="/setting"><span class="material-symbols-outlined text-[20px]">manage_accounts</span> {{ translations.profile }}</a>
         </nav>
         <a href="/logout"
             class="flex items-center gap-3 px-8 py-5 border-t border-border-color text-sm font-medium text-red-500"><span
-                class="material-symbols-outlined text-[20px]">logout</span> Log Out</a>
+                class="material-symbols-outlined text-[20px]">logout</span> {{ translations.logout }}</a>
     </div>
 
     <header class="bg-surface border-b border-border-color sticky top-0 z-30">
@@ -89,16 +94,16 @@
             </div>
             <nav class="hidden md:flex items-center gap-1">
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                    href="/dashboard">Dashboard</a>
+                    href="/dashboard">{{ translations.dashboard }}</a>
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                    href="/chat">Chat</a>
-                <a class="text-primary bg-red-50 px-4 py-2 rounded-lg text-sm font-bold" href="/practice">Practice</a>
+                    href="/chat">{{ translations.chat }}</a>
+                <a class="text-primary bg-red-50 px-4 py-2 rounded-lg text-sm font-bold" href="/practice">{{ translations.practice }}</a>
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                    href="/vocabulary">Vocabulary</a>
+                    href="/vocabulary">{{ translations.vocabulary }}</a>
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                    href="/setting">Profile</a>
+                    href="/setting">{{ translations.profile }}</a>
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                    href="/logout">Log Out</a>
+                    href="/logout">{{ translations.logout }}</a>
             </nav>
             <div class="flex items-center gap-3">
                 <div
@@ -174,7 +179,7 @@
                 <div class="relative flex-1 p-6 lg:p-8">
                     <textarea id="practice-input"
                         class="w-full h-full bg-transparent border-0 focus:ring-0 p-0 text-lg leading-relaxed text-slate-800 resize-none font-display placeholder:text-slate-300 outline-none min-h-[300px]"
-                        placeholder="Write your German text here..."></textarea>
+                        placeholder="{{ translations.write_text_placeholder }}"></textarea>
                 </div>
                 <div class="flex items-center justify-between px-6 py-4 border-t border-border-color bg-slate-50/50">
                     <div id="word-count" class="text-sm font-medium text-text-secondary">0 words</div>
@@ -182,7 +187,7 @@
                         <button id="check-btn" onclick="checkGrammar()"
                             class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-primary hover:bg-primary-hover text-white font-semibold text-sm transition-all shadow-lg shadow-red-500/20 active:translate-y-px">
                             <span id="check-icon" class="material-symbols-outlined text-[20px]">check_circle</span>
-                            <span id="check-text">Check Grammar</span>
+                            <span id="check-text">{{ translations.check_grammar }}</span>
                         </button>
                     </div>
                 </div>
@@ -191,7 +196,7 @@
             <div id="results-section" class="hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <h3 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
                     <span class="material-symbols-outlined text-primary">analytics</span>
-                    Detailed Analysis
+                    {{ translations.detailed_analysis }}
                 </h3>
                 <div id="corrections-container" class="grid gap-4"></div>
             </div>

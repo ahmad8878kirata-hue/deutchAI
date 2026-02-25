@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="{{ translations.lang_code }}" dir="{{ lang_dir }}"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>DeutschAI - Master German with AI</title>
@@ -24,6 +24,13 @@
             },
         }
     </script>
+    <style>
+        {% if lang_dir == 'rtl' %}
+        body { font-weight: 600 !important; }
+        h1, h2, h3, h4, h5, h6 { font-weight: 700 !important; }
+        .font-bold { font-weight: 800 !important; }
+        {% endif %}
+    </style>
 </head>
 <body class="bg-white font-display text-slate-900 antialiased selection:bg-primary/20 selection:text-primary">
 <div class="relative flex min-h-screen flex-col overflow-x-hidden">

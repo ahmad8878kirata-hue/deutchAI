@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ translations.lang_code }}" dir="{{ lang_dir }}">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>DeutschAI - Chat Practice</title>
+    <title>DeutschAI - {{ translations.chat }}</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
@@ -48,6 +48,11 @@
         #mobile-sidebar {
             transition: transform 0.3s ease;
         }
+        {% if lang_dir == 'rtl' %}
+        body { font-weight: 600 !important; }
+        h1, h2, h3, h4, h5, h6 { font-weight: 700 !important; }
+        .font-bold { font-weight: 800 !important; }
+        {% endif %}
     </style>
 </head>
 
@@ -72,19 +77,19 @@
         </div>
         <nav class="flex flex-col gap-1 p-4 flex-1">
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-subtle-text hover:text-slate-900 hover:bg-slate-50"
-                href="/dashboard"><span class="material-symbols-outlined text-[20px]">dashboard</span> Dashboard</a>
+                href="/dashboard"><span class="material-symbols-outlined text-[20px]">dashboard</span> {{ translations.dashboard }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-primary bg-red-50"
-                href="/chat"><span class="material-symbols-outlined text-[20px]">forum</span> Chat</a>
+                href="/chat"><span class="material-symbols-outlined text-[20px]">forum</span> {{ translations.chat }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-subtle-text hover:text-slate-900 hover:bg-slate-50"
-                href="/practice"><span class="material-symbols-outlined text-[20px]">psychology</span> Practice</a>
+                href="/practice"><span class="material-symbols-outlined text-[20px]">psychology</span> {{ translations.practice }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-subtle-text hover:text-slate-900 hover:bg-slate-50"
-                href="/vocabulary"><span class="material-symbols-outlined text-[20px]">menu_book</span> Vocabulary</a>
+                href="/vocabulary"><span class="material-symbols-outlined text-[20px]">menu_book</span> {{ translations.vocabulary }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-subtle-text hover:text-slate-900 hover:bg-slate-50"
-                href="/setting"><span class="material-symbols-outlined text-[20px]">manage_accounts</span> Profile</a>
+                href="/setting"><span class="material-symbols-outlined text-[20px]">manage_accounts</span> {{ translations.profile }}</a>
         </nav>
         <a href="/logout"
             class="flex items-center gap-3 px-8 py-5 border-t border-border-light text-sm font-medium text-red-500"><span
-                class="material-symbols-outlined text-[20px]">logout</span> Log Out</a>
+                class="material-symbols-outlined text-[20px]">logout</span> {{ translations.logout }}</a>
     </div>
 
     <!-- Topic Selection Modal -->
@@ -228,13 +233,13 @@
                 <div class="bg-primary/10 p-6 rounded-full animate-pulse">
                     <span class="material-symbols-outlined text-primary text-5xl">forum</span>
                 </div>
-                <h3 class="text-xl font-bold text-slate-900">Start a conversation with Hans</h3>
-                <p class="text-subtle-text max-w-sm">Practice your German naturally. Hans is ready to chat about any
+                <h3 class="text-xl font-bold text-slate-900">{{ translations.start_conversation }}</h3>
+                <p class="text-subtle-text max-w-sm">{{ translations.practice_german }}
                     topic with you!</p>
                 <div class="flex flex-wrap justify-center gap-2 mt-2">
                     <button
                         class="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold hover:border-primary hover:text-primary hover:shadow-sm transition-all flex items-center gap-2"
-                        onclick="setQuickMessage('Hallo Hans, wie geht es dir?')">Say hello 👋</button>
+                        onclick="setQuickMessage('Hallo Ahmad, wie geht es dir?')">{{ translations.say_hello }}</button>
                     <button
                         class="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold hover:border-primary hover:text-primary hover:shadow-sm transition-all flex items-center gap-2"
                         onclick="setQuickMessage('Ich möchte über meine Hobbies sprechen.')">Talk about hobbies
@@ -256,7 +261,7 @@
                     </button>
                     <input id="chat-input"
                         class="flex-1 bg-transparent border-none text-slate-800 placeholder-slate-400 focus:ring-0 text-base py-3"
-                        placeholder="Speak or type in German..." type="text" />
+                        placeholder="{{ translations.type_message }}" type="text" />
                     <div class="flex items-center gap-1">
                         <button id="send-btn"
                             class="bg-primary hover:bg-primary-hover text-white rounded-xl py-2.5 px-5 font-medium transition-colors flex items-center gap-2 shadow-lg shadow-primary/20">
@@ -345,9 +350,9 @@
             setTimeout(() => topicModal.remove(), 300);
             displayTopic.textContent = selectedTopic;
             topicIcon.textContent = selectedIcon;
-            addMessage(`Great choice! Let's talk about "${selectedTopic}". Getting Hans ready for you...`, 'assistant');
+            addMessage(`{{ translations.great_choice }} "${selectedTopic}". {{ translations.ahmad_preparing }}`, 'assistant');
             const loadingId = 'loading-initial';
-            const loadingDiv = createLoadingIndicator(loadingId, 'Hans is preparing...');
+            const loadingDiv = createLoadingIndicator(loadingId, '{{ translations.ahmad_preparing }}');
             chatContainer.appendChild(loadingDiv);
             try {
                 const response = await fetch('/chat/api', {
@@ -403,7 +408,7 @@
             addMessage(message, 'user');
             chatInput.value = '';
             const loadingId = 'loading-' + Date.now();
-            const loadingDiv = createLoadingIndicator(loadingId, 'Hans is writing...');
+            const loadingDiv = createLoadingIndicator(loadingId, '{{ translations.ahmad_preparing }}');
             chatContainer.appendChild(loadingDiv);
             chatContainer.scrollTop = chatContainer.scrollHeight;
             try {

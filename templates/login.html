@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ translations.lang_code }}" dir="{{ lang_dir }}">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>DeutschAI - Authentication</title>
+    <title>DeutschAI - {{ translations.login }}</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
@@ -42,12 +42,19 @@
         @apply flex flex-col gap-1.5;
     }
     .input-label {
-        @apply text-sm font-semibold text-text-main ml-1;
+        @apply text-sm font-semibold text-text-main;
     }
     .form-input {
         @apply w-full px-4 py-3 rounded-xl border border-border-light bg-white text-text-main placeholder-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary focus:outline-none transition-all text-sm shadow-input;
     }
-</style>
+    {% if lang_dir == 'rtl' %}
+    .form-input { text-align: right; }
+    .input-label { text-align: right; }
+    body { font-weight: 600 !important; }
+    h1, h2, h3, h4, h5, h6 { font-weight: 700 !important; }
+    .font-bold { font-weight: 800 !important; }
+    {% endif %}
+    </style>
 </head>
 
 <body
@@ -64,7 +71,7 @@
                 </div>
                 <span class="text-xl font-bold tracking-tight text-text-main">DeutschAI</span>
             </div>
-            <a class="text-sm font-semibold text-text-sub hover:text-primary transition-colors" href="#">Help Center</a>
+            <a class="text-sm font-semibold text-text-sub hover:text-primary transition-colors" href="#">{{ translations.help_center }}</a>
         </div>
     </nav>
     <main class="flex-grow flex items-center justify-center relative w-full px-4 pt-20 pb-12">
@@ -77,15 +84,13 @@
                     <div
                         class="inline-flex items-center gap-2 px-3 py-1 bg-white border border-border-light text-primary text-xs font-bold rounded-full tracking-wide uppercase shadow-sm">
                         <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-                        AI-Assisted Learning
+                        {{ translations.ai_learning }}
                     </div>
                     <h1 class="text-5xl font-extrabold text-text-main leading-tight tracking-tight">
-                        Fluency is just a <br />
-                        <span class="text-primary">conversation</span> away.
+                        {{ translations.fluency_away|safe }}
                     </h1>
                     <p class="text-lg text-text-sub leading-relaxed max-w-lg">
-                        Experience the next generation of language learning. Our AI adapts to your CEFR level in
-                        real-time, correcting your pronunciation and grammar instantly.
+                        {{ translations.next_gen }}
                     </p>
                 </div>
                 <div class="grid grid-cols-2 gap-6 pt-4 border-t border-border-light/50">
@@ -95,8 +100,8 @@
                             <span class="material-symbols-outlined">school</span>
                         </div>
                         <div>
-                            <h3 class="font-bold text-text-main">Structured Path</h3>
-                            <p class="text-sm text-text-sub mt-1">From A1 beginner to C2 mastery</p>
+                            <h3 class="font-bold text-text-main">{{ translations.structured_path }}</h3>
+                            <p class="text-sm text-text-sub mt-1">{{ translations.a1_to_c2 }}</p>
                         </div>
                     </div>
                     <div class="flex gap-4 items-start pt-6">
@@ -105,8 +110,8 @@
                             <span class="material-symbols-outlined">mic</span>
                         </div>
                         <div>
-                            <h3 class="font-bold text-text-main">Voice Analysis</h3>
-                            <p class="text-sm text-text-sub mt-1">Real-time pronunciation feedback</p>
+                            <h3 class="font-bold text-text-main">{{ translations.voice_analysis }}</h3>
+                            <p class="text-sm text-text-sub mt-1">{{ translations.realtime_feedback }}</p>
                         </div>
                     </div>
                 </div>
@@ -116,8 +121,8 @@
                     class="bg-surface rounded-3xl shadow-card border border-border-light p-8 md:p-10 relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-orange-500"></div>
                     <div class="mb-8 text-center">
-                        <h2 class="text-2xl font-bold text-text-main">Welcome back</h2>
-                        <p class="text-text-sub text-sm mt-2">Enter your details to access your lessons.</p>
+                        <h2 class="text-2xl font-bold text-text-main">{{ translations.login_title }}</h2>
+                        <p class="text-text-sub text-sm mt-2">{{ translations.enter_details }}</p>
                     </div>
                     {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
@@ -132,22 +137,21 @@
                     <div class="flex p-1 bg-slate-100 rounded-xl mb-8">
                         <button
                             class="flex-1 py-2 text-sm font-semibold text-text-main bg-white shadow-sm rounded-lg transition-all"
-                            onclick="window.location.href='/login'">Log In</button>
+                            onclick="window.location.href='/login'">{{ translations.login }}</button>
                         <button
                             class="flex-1 py-2 text-sm font-semibold text-text-sub hover:text-text-main transition-all"
-                            onclick="window.location.href='/signup'">Sign Up</button>
+                            onclick="window.location.href='/signup'">{{ translations.signup }}</button>
                     </div>
                     <form class="space-y-5" method="POST">
                         <div class="input-group">
-                            <label class="input-label">Email</label>
+                            <label class="input-label">{{ translations.email }}</label>
                             <input class="form-input" name="email" placeholder="name@example.com" required=""
                                 type="email" />
                         </div>
                         <div class="input-group">
-                            <div class="flex justify-between items-center ml-1">
-                                <label class="text-sm font-semibold text-text-main">Password</label>
-                                <a class="text-xs font-semibold text-primary hover:underline" href="#">Forgot
-                                    password?</a>
+                            <div class="flex justify-between items-center">
+                                <label class="text-sm font-semibold text-text-main">{{ translations.password }}</label>
+                                <a class="text-xs font-semibold text-primary hover:underline" href="#">{{ translations.forgot_password }}</a>
                             </div>
                             <input class="form-input" name="password" placeholder="Enter your password" required=""
                                 type="password" />
@@ -155,7 +159,7 @@
                         <button
                             class="w-full bg-primary hover:bg-primary-hover text-white font-bold py-3.5 rounded-xl transition-all shadow-lg shadow-primary/20 hover:shadow-primary/30 flex items-center justify-center gap-2 mt-2"
                             type="submit">
-                            Sign In
+                            {{ translations.signin }}
                         </button>
                     </form>
                 </div>
