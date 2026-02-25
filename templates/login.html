@@ -71,7 +71,8 @@
                 </div>
                 <span class="text-xl font-bold tracking-tight text-text-main">DeutschAI</span>
             </div>
-            <a class="text-sm font-semibold text-text-sub hover:text-primary transition-colors" href="#">{{ translations.help_center }}</a>
+            <a class="text-sm font-semibold text-text-sub hover:text-primary transition-colors" href="#">{{
+                translations.help_center }}</a>
         </div>
     </nav>
     <main class="flex-grow flex items-center justify-center relative w-full px-4 pt-20 pb-12">
@@ -145,15 +146,17 @@
                     <form class="space-y-5" method="POST">
                         <div class="input-group">
                             <label class="input-label">{{ translations.email }}</label>
-                            <input class="form-input" name="email" placeholder="name@example.com" required=""
-                                type="email" />
+                            <input class="form-input" name="email" placeholder="{{ translations.email_placeholder }}"
+                                required="" type="email" />
                         </div>
                         <div class="input-group">
                             <div class="flex justify-between items-center">
                                 <label class="text-sm font-semibold text-text-main">{{ translations.password }}</label>
-                                <a class="text-xs font-semibold text-primary hover:underline" href="#">{{ translations.forgot_password }}</a>
+                                <a class="text-xs font-semibold text-primary hover:underline" href="#">{{
+                                    translations.forgot_password }}</a>
                             </div>
-                            <input class="form-input" name="password" placeholder="Enter your password" required=""
+                            <input class="form-input" name="password"
+                                placeholder="{{ translations.enter_password_placeholder }}" required=""
                                 type="password" />
                         </div>
                         <button

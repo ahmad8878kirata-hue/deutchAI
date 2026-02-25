@@ -20,13 +20,22 @@ TRANSLATIONS = {
         'login_title': 'Welcome back',
         'start_journey': 'Start your journey to German fluency today.',
         'first_name': 'First Name',
+        'first_name_placeholder': 'Hans',
         'last_name': 'Last Name',
-        'current_german_level': 'Current German Level',
-        'select_cefr_level': 'Select your CEFR level',
+        'last_name_placeholder': 'Müller',
         'email': 'Email',
         'password': 'Password',
         'confirm_password': 'Confirm Password',
-        'already_have_account': 'Already have an account?',
+        'email_placeholder': 'name@example.com',
+        'password_placeholder': 'Create a strong password',
+        'repeat_password_placeholder': 'Repeat your password',
+        'enter_password_placeholder': 'Enter your password',
+        'current_german_level': 'Current Level',
+        'select_cefr_level': 'Select your CEFR level',
+        'target_language': 'Language to Learn',
+        'learn_english': 'English',
+        'learn_german': 'German',
+        'select_target_language': 'Select the language you want to learn',
         'native_language': 'Native Language',
         'select_native_language': 'Select your native language',
         'correction_instructions': 'Grammar corrections will be provided in your native language.',
@@ -65,7 +74,8 @@ TRANSLATIONS = {
         'ready': 'Ready',
         'words': 'words',
         'ai_chat': 'AI Chat',
-        'type_message': 'Type your message in German...',
+        'type_message_de': 'Type your message in German...',
+        'type_message_en': 'Type your message in English...',
         'send': 'Send',
         'speaking_practice': 'Speaking Practice',
         'call_hans': 'Call Hans',
@@ -91,11 +101,13 @@ TRANSLATIONS = {
         'methodology': 'Methodology',
         'pricing': 'Pricing',
         'get_started': 'Get Started',
-        'speak_german': 'Speak German',
+        'speak_lang_de': 'Speak German',
+        'speak_lang_en': 'Speak English',
         'fluently_ai': 'Fluently with AI',
         'personalized': 'Personalized lessons based on CEFR standards (A1–C2). Learn smarter with an adaptive AI tutor that corrects your pronunciation and grammar in real-time.',
         'why_deutschai': 'Why DeutschAI?',
-        'master_german': 'Master German with Intelligent Tools',
+        'master_lang_de': 'Master German with Intelligent Tools',
+        'master_lang_en': 'Master English with Intelligent Tools',
         'platform_adapts': 'Our platform adapts to your pace, ensuring you master every aspect of the language efficiently—from complex grammar to natural pronunciation.',
         'realtime_correction': 'Real-time Correction',
         'instant_feedback': 'Instant feedback on your writing, grammar mistakes, and style nuances as you type.',
@@ -106,7 +118,8 @@ TRANSLATIONS = {
         'cefr_progress': 'CEFR Progress',
         'visualize': 'Visualize your detailed journey from A1 beginner to C2 fluency with analytics.',
         'path_fluency': 'Your Path to Fluency',
-        'break_down': 'We break down the complexity of German grammar into manageable, logical steps aligned with the Common European Framework of Reference for Languages.',
+        'break_down_de': 'We break down the complexity of German grammar into manageable, logical steps aligned with the CEFR framework.',
+        'break_down_en': 'We break down the complexity of English grammar into manageable, logical steps aligned with the CEFR framework.',
         'build_habit': 'Build a Daily Habit',
         'consistency': 'Consistency beats intensity. Committing to short, focused practice sessions every day is the most effective way to achieve fluency.',
         'personalized_plan': 'Personalized Plan',
@@ -121,7 +134,8 @@ TRANSLATIONS = {
         'vocab_lab': 'Vocab Lab',
         'vocab_lab_desc': 'Review and master words you\'ve learned.',
         'chat_with_ahmad': 'Chat with Ahmad',
-        'chat_desc': 'Practice ordering a coffee in Berlin.',
+        'chat_desc_de': 'Practice ordering a coffee in Berlin.',
+        'chat_desc_en': 'Practice ordering a coffee in London.',
         'grammar_drill': 'Grammar Drill',
         'grammar_drill_desc': 'Write a text and let AI check it.',
         'voice_call': 'Voice Call',
@@ -134,35 +148,40 @@ TRANSLATIONS = {
         'at_doctor': 'At the Doctor',
         'job_interview': 'Job Interview',
         'living_berlin': 'Living in Berlin',
+        'living_london': 'Living in London',
         'start_chatting': 'Start Chatting',
         'writing_practice': 'Writing Practice',
         'goal': 'Goal: 5–15 min',
         'topic': 'Topic',
         'grammar_focus': 'Grammar Focus',
-        'instructions': 'Write a text in German. DeutschAI will analyze your grammar, suggest improvements, and evaluate your vocabulary level.',
-        'write_text_placeholder': 'Write your German text here...',
+        'instructions_de': 'Write a text in German. DeutschAI will analyze your grammar, suggest improvements, and evaluate your vocabulary level.',
+        'instructions_en': 'Write a text in English. DeutschAI will analyze your grammar, suggest improvements, and evaluate your vocabulary level.',
+        'write_text_placeholder_de': 'Write your German text here...',
+        'write_text_placeholder_en': 'Write your English text here...',
         'words': 'words',
         'ready': 'Ready',
         'my_vocabulary': 'My Vocabulary',
         'search_words': 'Search words...',
         'start_now': 'Start now →',
         'no_activity': 'No activity yet. Your journey starts today!',
-        'ready_improve': 'Ready to improve your German? Let\'s keep going!',
+        'ready_improve': 'Ready to improve? Let\'s keep going!',
         'current_level': 'Current Level',
-        'german_level': 'German',
+        'learning_level_label': 'Level',
         'completed': 'Completed',
         'next_level': 'XP to next level',
         'beginner': 'Beginner',
         'advanced': 'Advanced',
         'start_conversation': 'Start a conversation with Ahmad',
-        'practice_german': 'Practice your German naturally. Ahmad is ready to chat about any topic.',
+        'practice_lang_de': 'Practice your German naturally. Ahmad is ready to chat about any topic.',
+        'practice_lang_en': 'Practice your English naturally. Ahmad is ready to chat about any topic.',
         'say_hello': 'Say hello 👋',
         'great_choice': 'Great choice! Let\'s talk about',
         'ahmad_preparing': 'Ahmad is preparing...',
         'ahmad_thinking': 'Ahmad is thinking...',
         'ahmad_speaking': 'Ahmad is speaking...',
         'ahmad_listening': 'Just speak — Ahmad is always listening',
-        'ahmad_greeting': 'Hallo! Ich bin Ahmad, dein KI-Deutschlehrer. Sprich einfach mit mir — ich höre immer zu!',
+        'ahmad_greeting_de': 'Hallo! Ich bin Ahmad, dein KI-Deutschlehrer. Sprich einfach mit mir — ich höre immer zu!',
+        'ahmad_greeting_en': 'Hello! I am Ahmad, your AI language tutor. Just speak to me — I am always listening!',
         'ahmad_tech': 'Ahmad – DeutschAI',
     },
     'ar': {
@@ -176,13 +195,22 @@ TRANSLATIONS = {
         'login_title': 'مرحباً بعودتك',
         'start_journey': 'ابدأ رحلتك لإتقان اللغة الألمانية اليوم.',
         'first_name': 'الاسم الأول',
+        'first_name_placeholder': 'أحمد',
         'last_name': 'اسم العائلة',
-        'current_german_level': 'مستوى الألماني الحالي',
-        'select_cefr_level': 'اختر مستوى CECRL',
+        'last_name_placeholder': 'كريطة',
         'email': 'البريد الإلكتروني',
         'password': 'كلمة المرور',
         'confirm_password': 'تأكيد كلمة المرور',
-        'already_have_account': 'لديك حساب بالفعل؟',
+        'email_placeholder': 'name@example.com',
+        'password_placeholder': 'أنشئ كلمة مرور قوية',
+        'repeat_password_placeholder': 'كرر كلمة المرور',
+        'enter_password_placeholder': 'أدخل كلمة المرور',
+        'current_german_level': 'المستوى الحالي',
+        'select_cefr_level': 'اختر مستوى CECRL',
+        'target_language': 'اللغة المراد تعلمها',
+        'learn_english': 'الإنجليزية',
+        'learn_german': 'الألمانية',
+        'select_target_language': 'اختر اللغة التي تريد تعلمها',
         'native_language': 'اللغة الأم',
         'select_native_language': 'اختر لغتك الأم',
         'correction_instructions': 'سيتم تقديم تصحيحات القواعد بلغتك الأم.',
@@ -221,7 +249,8 @@ TRANSLATIONS = {
         'ready': 'جاهز',
         'words': 'كلمات',
         'ai_chat': 'الدردشة الذكية',
-        'type_message': 'اكتب رسالتك بالألمانية...',
+        'type_message_de': 'اكتب رسالتك بالألمانية...',
+        'type_message_en': 'اكتب رسالتك بالإنجليزية...',
         'send': 'إرسال',
         'speaking_practice': 'تدريب النطق',
         'call_hans': 'الاتصال بهانس',
@@ -247,12 +276,14 @@ TRANSLATIONS = {
         'methodology': 'المنهجية',
         'pricing': 'الأسعار',
         'get_started': 'ابدأ الآن',
-        'speak_german': 'تحدث الألمانية',
+        'speak_lang_de': 'تحدث الألمانية',
+        'speak_lang_en': 'تحدث الإنجليزية',
         'fluently_ai': 'بإتقان مع الذكاء الاصطناعي',
-        'personalized': 'دروس مخصصة基于CEFR标准（A1-C2）。通过自适应AI导师学习更聪明，实时纠正您的发音和语法。',
+        'personalized': 'دروس مخصصة基于CEFR标准（A1-C2）。通过自 adaptiveAI导师学习更聪明，实时纠正您的发音和语法。',
         'why_deutschai': 'لماذا دوتش آي؟',
-        'master_german': 'أتقن الألمانية بأدوات ذكية',
-        'platform_adapts': 'تتكيف منصتنا مع وتيرتك، مما يضمن إتقان كل جانب من جوانب اللغة بكفاءة—from القواعد المعقدة إلى النطق الطبيعي.',
+        'master_lang_de': 'أتقن الألمانية بأدوات ذكية',
+        'master_lang_en': 'أتقن الإنجليزية بأدوات ذكية',
+        'platform_adapts': 'تتكيف منصتنا مع وتيرتك، مما يضمن إتقان كل جانب من جوانب اللغة بكفاءة—من القواعد المعقدة إلى النطق الطبيعي.',
         'realtime_correction': 'تصحيح فوري',
         'instant_feedback': 'تعليقات فورية على كتابتك وأخطاء القواعد والتفاصيل النحوية أثناء الكتابة.',
         'ai_chat_partner': 'شريك الدردشة بالذكاء الاصطناعي',
@@ -262,7 +293,8 @@ TRANSLATIONS = {
         'cefr_progress': 'تقدم CECFR',
         'visualize': 'تصور رحلتك التفصيلية من المبتدئ A1 إلى الإتقان C2.',
         'path_fluency': 'مسارك للإتقان',
-        'break_down': 'نقسم تعقيدات القواعد الألمانية إلى خطوات منطقية وقابلة للإدارة مصممة وفقاً للإطار الأوروبي المرجعي اللغوي.',
+        'break_down_de': 'نقسم تعقيدات القواعد الألمانية إلى خطوات منطقية وقابلة للإدارة مصممة وفقاً للإطار الأوروبي المرجعي اللغوي.',
+        'break_down_en': 'نقسم تعقيدات القواعد الإنجليزية إلى خطوات منطقية وقابلة للإدارة مصممة وفقاً للإطار الأوروبي المرجعي اللغوي.',
         'build_habit': 'بناء عادة يومية',
         'consistency': 'الاتساق يتفوق على الشدة. الالتزام بجلسات تدريب قصيرة ومركزة كل يوم هو الطريقة الأكثر فعالية لتحقيق الإتقان.',
         'personalized_plan': 'خطة مخصصة',
@@ -277,7 +309,8 @@ TRANSLATIONS = {
         'vocab_lab': 'مختبر المفردات',
         'vocab_lab_desc': 'راجع وأتقن الكلمات التي تعلمتها.',
         'chat_with_ahmad': 'دردشة مع أحمد',
-        'chat_desc': 'تدرب على طلب قهوة في برلين.',
+        'chat_desc_de': 'تدرب على طلب قهوة في برلين.',
+        'chat_desc_en': 'تدرب على طلب قهوة في لندن.',
         'grammar_drill': 'تمارين القواعد',
         'grammar_drill_desc': 'اكتب نصاً ودع الذكاء الاصطناعي يفحصه.',
         'voice_call': 'مكالمة صوتية',
@@ -290,35 +323,40 @@ TRANSLATIONS = {
         'at_doctor': 'عند الطبيب',
         'job_interview': 'مقابلة عمل',
         'living_berlin': 'العيش في برلين',
+        'living_london': 'العيش في لندن',
         'start_chatting': 'ابدأ الدردشة',
         'writing_practice': 'تدريب الكتابة',
         'goal': 'الهدف: 5-15 دقيقة',
         'topic': 'الموضوع',
         'grammar_focus': 'تركيز القواعد',
-        'instructions': 'اكتب نصاً بالألمانية. سيقوم DeutschAI بتحليل القواعد واقتراح التحسينات وتقييم مستوى مفرداتك.',
-        'write_text_placeholder': 'اكتب نصك الألماني هنا...',
+        'instructions_de': 'اكتب نصاً بالألمانية. سيقوم DeutschAI بتحليل القواعد واقتراح التحسينات وتقييم مستوى مفرداتك.',
+        'instructions_en': 'اكتب نصاً بالإنجليزية. سيقوم DeutschAI بتحليل القواعد واقتراح التحسينات وتقييم مستوى مفرداتك.',
+        'write_text_placeholder_de': 'اكتب نصك الألماني هنا...',
+        'write_text_placeholder_en': 'اكتب نصك الإنجليزي هنا...',
         'words': 'كلمات',
         'ready': 'جاهز',
         'my_vocabulary': 'مفرداتي',
         'search_words': 'البحث عن كلمات...',
         'start_now': 'ابدأ الآن ←',
         'no_activity': 'لا يوجد نشاط بعد. رحلتك تبدأ اليوم!',
-        'ready_improve': 'مستعد لتحسين الألمانيتك؟ هيا نستمر!',
+        'ready_improve': 'مستعد للتحسين؟ هيا نستمر!',
         'current_level': 'المستوى الحالي',
-        'german_level': 'الألمانية',
+        'learning_level_label': 'مستوى',
         'completed': 'مكتمل',
         'next_level': 'XP للمستوى التالي',
         'beginner': 'مبتدئ',
         'advanced': 'متقدم',
         'start_conversation': 'ابدأ محادثة مع أحمد',
-        'practice_german': 'تدرب على الألمانية بشكل طبيعي. أحمد مستعد للدردشة حول أي موضوع.',
+        'practice_lang_de': 'تدرب على الألمانية بشكل طبيعي. أحمد مستعد للدردشة حول أي موضوع.',
+        'practice_lang_en': 'تدرب على الإنجليزية بشكل طبيعي. أحمد مستعد للدردشة حول أي موضوع.',
         'say_hello': 'قل مرحباً 👋',
         'great_choice': 'اختيار رائع! دعنا نتحدث عن',
         'ahmad_preparing': 'أحمد يستعد...',
         'ahmad_thinking': 'أحمد يفكر...',
         'ahmad_speaking': 'أحمد يتحدث...',
         'ahmad_listening': 'تحدث فقط — أحمد دائماً يستمع',
-        'ahmad_greeting': 'Hallo! Ich bin Ahmad, dein KI-Deutschlehrer. Sprich einfach mit mir — ich höre immer zu!',
+        'ahmad_greeting_de': 'Hallo! Ich bin Ahmad, dein KI-Deutschlehrer. Sprich einfach mit mir — ich هو دائماً يستمع!',
+        'ahmad_greeting_en': 'Hello! I am Ahmad, your AI language tutor. Just speak to me — I am always listening!',
         'ahmad_tech': 'أحمد - DeutschAI',
     }
 }
@@ -357,6 +395,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
+    target_language = db.Column(db.String(10), nullable=False, default='de')
     german_level = db.Column(db.String(20), nullable=False)
     native_language = db.Column(db.String(10), nullable=False, default='en')
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -456,6 +495,7 @@ def signup():
     if request.method == 'POST':
         first_name = request.form.get('first_name')
         last_name = request.form.get('last_name')
+        target_language = request.form.get('target_language', 'de')
         german_level = request.form.get('german_level')
         native_language = request.form.get('native_language', 'en')
         email = request.form.get('email')
@@ -472,7 +512,7 @@ def signup():
             return redirect(url_for('signup'))
 
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-        new_user = User(first_name=first_name, last_name=last_name, german_level=german_level, native_language=native_language, email=email, password=hashed_password)
+        new_user = User(first_name=first_name, last_name=last_name, target_language=target_language, german_level=german_level, native_language=native_language, email=email, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
         flash('Account created successfully! Please log in.', 'success')
@@ -559,6 +599,9 @@ def chat_api():
         
         api_key = "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"
         
+        target_lang = current_user.target_language
+        target_lang_name = "German" if target_lang == "de" else "English"
+        
         response = requests.post(
             url="https://openrouter.ai/api/v1/chat/completions",
             headers={
@@ -571,7 +614,7 @@ def chat_api():
                 "messages": [
                     {
                         "role": "system",
-                        "content": f"You are Hans, a helpful German language tutor. The user's German level is {current_user.german_level}. Please speak primarily in German and encourage the user. Keep your responses concise and engaging."
+                        "content": f"You are Ahmad, a helpful {target_lang_name} language tutor. The user's {target_lang_name} level is {current_user.german_level}. Please speak primarily in {target_lang_name} and encourage the user. Keep your responses concise and engaging."
                     },
                     {
                         "role": "user",
@@ -582,7 +625,7 @@ def chat_api():
         )
         
         if response.status_code == 200:
-            log_activity(current_user, 'chat', 'Konversation mit Hans geführt', 10)
+            log_activity(current_user, 'chat', f'Konversation mit Ahmad geführt ({target_lang_name})', 10)
             return jsonify(response.json())
         else:
             return jsonify({"error": "Failed to get response from AI"}), response.status_code
@@ -619,14 +662,16 @@ def practice_api():
 
     api_key = "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"
     
+    target_lang = current_user.target_language
+    target_lang_name = "German" if target_lang == "de" else "English"
     native_lang = current_user.native_language
     lang_instruction = "in English" if native_lang == "en" else "in Arabic"
     
     system_prompt = f"""
-    You are an expert German grammar checker. The user's level is {current_user.german_level}.
+    You are an expert {target_lang_name} grammar checker. The user's level is {current_user.german_level}.
     The user's native language is: {"English" if native_lang == "en" else "Arabic"}.
     
-    Analyze the following German text for:
+    Analyze the following {target_lang_name} text for:
     1. Grammar errors
     2. Spelling mistakes
     3. Suggested improvements for better fluency
@@ -716,9 +761,12 @@ def call_api():
 
     api_key = "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"
 
+    target_lang = current_user.target_language
+    target_lang_name = "German" if target_lang == "de" else "English"
+
     system_message = {
         "role": "system",
-        "content": f"You are Hans, a friendly and encouraging German language teacher. The user's level is {current_user.german_level}. The user is practicing speaking German. Always respond in German, keep responses short and natural like a real conversation. If the message seems unclear or broken, try your best to understand the intent and respond helpfully. Gently correct any grammar mistakes."
+        "content": f"You are Ahmad, a friendly and encouraging {target_lang_name} language teacher. The user's level is {current_user.german_level}. The user is practicing speaking {target_lang_name}. Always respond in {target_lang_name}, keep responses short and natural like a real conversation. If the message seems unclear or broken, try your best to understand the intent and respond helpfully. Gently correct any grammar mistakes."
     }
 
     response = requests.post(
@@ -735,7 +783,8 @@ def call_api():
     )
 
     if response.status_code == 200:
-        log_activity(current_user, 'chat', 'Sprachanruf mit Hans geführt', 15)
+        target_lang_name = "German" if current_user.target_language == "de" else "English"
+        log_activity(current_user, 'chat', f'Sprachanruf mit Ahmad geführt ({target_lang_name})', 15)
         return jsonify(response.json())
     else:
         return jsonify({"error": "AI response failed"}), response.status_code
@@ -749,6 +798,7 @@ def setting():
         current_user.email = request.form.get('email')
         current_user.german_level = request.form.get('cefr_level')
         current_user.native_language = request.form.get('native_language', 'en')
+        current_user.target_language = request.form.get('target_language', 'de')
         
         try:
             db.session.commit()

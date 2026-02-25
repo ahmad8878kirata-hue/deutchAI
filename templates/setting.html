@@ -68,17 +68,31 @@
         #mobile-sidebar {
             transition: transform 0.3s ease;
         }
-        {% if lang_dir == 'rtl' %}
+
+            {
+            % if lang_dir=='rtl' %
+        }
+
         body {
             font-weight: 600 !important;
         }
-        h1, h2, h3, h4, h5, h6 {
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             font-weight: 700 !important;
         }
+
         .font-bold {
             font-weight: 800 !important;
         }
-        {% endif %}
+
+            {
+            % endif %
+        }
     </style>
 </head>
 
@@ -102,15 +116,20 @@
         </div>
         <nav class="flex flex-col gap-1 p-4 flex-1">
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/dashboard"><span class="material-symbols-outlined text-[20px]">dashboard</span> {{ translations.dashboard }}</a>
+                href="/dashboard"><span class="material-symbols-outlined text-[20px]">dashboard</span> {{
+                translations.dashboard }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/chat"><span class="material-symbols-outlined text-[20px]">forum</span> {{ translations.chat }}</a>
+                href="/chat"><span class="material-symbols-outlined text-[20px]">forum</span> {{ translations.chat
+                }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/practice"><span class="material-symbols-outlined text-[20px]">psychology</span> {{ translations.practice }}</a>
+                href="/practice"><span class="material-symbols-outlined text-[20px]">psychology</span> {{
+                translations.practice }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/vocabulary"><span class="material-symbols-outlined text-[20px]">menu_book</span> {{ translations.vocabulary }}</a>
+                href="/vocabulary"><span class="material-symbols-outlined text-[20px]">menu_book</span> {{
+                translations.vocabulary }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-primary bg-red-50"
-                href="/setting"><span class="material-symbols-outlined text-[20px]">manage_accounts</span> {{ translations.profile }}</a>
+                href="/setting"><span class="material-symbols-outlined text-[20px]">manage_accounts</span> {{
+                translations.profile }}</a>
         </nav>
         <a href="/logout"
             class="flex items-center gap-3 px-8 py-5 border-t border-border-color text-sm font-medium text-red-500"><span
@@ -174,7 +193,8 @@
                     <span>{{ translations.settings }}</span>
                 </div>
                 <div class="flex flex-wrap items-baseline justify-between gap-4">
-                    <h1 class="text-2xl lg:text-3xl font-bold tracking-tight text-text-main">{{ translations.settings }}</h1>
+                    <h1 class="text-2xl lg:text-3xl font-bold tracking-tight text-text-main">{{ translations.settings }}
+                    </h1>
                 </div>
             </div>
             <div class="bg-surface rounded-xl shadow-soft border border-border-color overflow-hidden">
@@ -230,99 +250,127 @@
                 <div class="p-6 lg:p-8 border-b border-border-color">
                     <h3 class="text-lg font-bold text-text-main mb-1">{{ translations.learning_preferences }}</h3>
                     <p class="text-sm text-text-secondary mb-6">Customize your CEFR level and daily practice goals.</p>
-                    <div class="space-y-6">
-                        <div class="space-y-3">
-                            <label class="text-sm font-semibold text-text-main">{{ translations.native_language }}</label>
-                            <p class="text-xs text-text-secondary mb-2">Grammar corrections and vocabulary translations will be shown in your native language.</p>
-                            <div class="grid grid-cols-2 gap-3">
-                                <label class="cursor-pointer group relative">
-                                    <input class="peer sr-only" name="native_language" type="radio" value="en" {% if user.native_language=='en' %}checked{% endif %} />
-                                    <div class="p-3 text-center rounded-lg border border-border-color bg-white peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary hover:border-slate-300 transition-all">
-                                        <span class="font-bold text-sm block">English</span>
-                                    </div>
-                                </label>
-                                <label class="cursor-pointer group relative">
-                                    <input class="peer sr-only" name="native_language" type="radio" value="ar" {% if user.native_language=='ar' %}checked{% endif %} />
-                                    <div class="p-3 text-center rounded-lg border border-border-color bg-white peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary hover:border-slate-300 transition-all">
-                                        <span class="font-bold text-sm block">العربية</span>
-                                    </div>
-                                </label>
-                            </div>
+                    <!-- Target Language -->
+                    <div class="space-y-3">
+                        <label class="text-sm font-semibold text-text-main">{{ translations.target_language }}</label>
+                        <p class="text-xs text-text-secondary mb-2">{{ translations.select_target_language }}</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="cursor-pointer group relative">
+                                <input class="peer sr-only" name="target_language" type="radio" value="de" {% if
+                                    user.target_language=='de' %}checked{% endif %} />
+                                <div
+                                    class="p-3 text-center rounded-lg border border-border-color bg-white peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary hover:border-slate-300 transition-all">
+                                    <span class="font-bold text-sm block">{{ translations.learn_german }}</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer group relative">
+                                <input class="peer sr-only" name="target_language" type="radio" value="en" {% if
+                                    user.target_language=='en' %}checked{% endif %} />
+                                <div
+                                    class="p-3 text-center rounded-lg border border-border-color bg-white peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary hover:border-slate-300 transition-all">
+                                    <span class="font-bold text-sm block">{{ translations.learn_english }}</span>
+                                </div>
+                            </label>
                         </div>
-                        <div class="space-y-3">
-                            <label class="text-sm font-semibold text-text-main">{{ translations.target_cefr_level }}</label>
-                            <div class="grid grid-cols-3 sm:grid-cols-6 gap-3">
-                                <label class="cursor-pointer group relative">
-                                    <input class="peer sr-only" name="cefr_level" type="radio" value="A1" {% if
-                                        user.german_level=='A1' %}checked{% endif %} />
-                                    <div
-                                        class="p-2 text-center rounded-lg border border-border-color bg-white peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary hover:border-slate-300 transition-all">
-                                        <span class="font-bold text-sm block">A1</span>
-                                        <span class="text-[10px] opacity-70 block font-medium">Beginner</span>
-                                    </div>
-                                </label>
-                                <label class="cursor-pointer group relative">
-                                    <input class="peer sr-only" name="cefr_level" type="radio" value="A2" {% if
-                                        user.german_level=='A2' %}checked{% endif %} />
-                                    <div
-                                        class="p-2 text-center rounded-lg border border-border-color bg-white peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary hover:border-slate-300 transition-all">
-                                        <span class="font-bold text-sm block">A2</span>
-                                        <span class="text-[10px] opacity-70 block font-medium">Elementary</span>
-                                    </div>
-                                </label>
-                                <label class="cursor-pointer group relative">
-                                    <input class="peer sr-only" name="cefr_level" type="radio" value="B1" {% if
-                                        user.german_level=='B1' %}checked{% endif %} />
-                                    <div
-                                        class="p-2 text-center rounded-lg border border-border-color bg-white peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary hover:border-slate-300 transition-all">
-                                        <span class="font-bold text-sm block">B1</span>
-                                        <span class="text-[10px] opacity-70 block font-medium">Intermediate</span>
-                                    </div>
-                                </label>
-                                <label class="cursor-pointer group relative">
-                                    <input class="peer sr-only" name="cefr_level" type="radio" value="B2" {% if
-                                        user.german_level=='B2' %}checked{% endif %} />
-                                    <div
-                                        class="p-2 text-center rounded-lg border border-border-color bg-white peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary hover:border-slate-300 transition-all">
-                                        <span class="font-bold text-sm block">B2</span>
-                                        <span class="text-[10px] opacity-70 block font-medium">Upper Int.</span>
-                                    </div>
-                                </label>
-                                <label class="cursor-pointer group relative">
-                                    <input class="peer sr-only" name="cefr_level" type="radio" value="C1" {% if
-                                        user.german_level=='C1' %}checked{% endif %} />
-                                    <div
-                                        class="p-2 text-center rounded-lg border border-border-color bg-white peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary hover:border-slate-300 transition-all">
-                                        <span class="font-bold text-sm block">C1</span>
-                                        <span class="text-[10px] opacity-70 block font-medium">Advanced</span>
-                                    </div>
-                                </label>
-                                <label class="cursor-pointer group relative">
-                                    <input class="peer sr-only" name="cefr_level" type="radio" value="C2" {% if
-                                        user.german_level=='C2' %}checked{% endif %} />
-                                    <div
-                                        class="p-2 text-center rounded-lg border border-border-color bg-white peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary hover:border-slate-300 transition-all">
-                                        <span class="font-bold text-sm block">C2</span>
-                                        <span class="text-[10px] opacity-70 block font-medium">Mastery</span>
-                                    </div>
-                                </label>
-                            </div>
+                    </div>
+
+                    <!-- Native Language -->
+                    <div class="space-y-3">
+                        <label class="text-sm font-semibold text-text-main">{{ translations.native_language }}</label>
+                        <p class="text-xs text-text-secondary mb-2">{{ translations.vocab_translation }}</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="cursor-pointer group relative">
+                                <input class="peer sr-only" name="native_language" type="radio" value="en" {% if
+                                    user.native_language=='en' %}checked{% endif %} />
+                                <div
+                                    class="p-3 text-center rounded-lg border border-border-color bg-white peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary hover:border-slate-300 transition-all">
+                                    <span class="font-bold text-sm block">English</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer group relative">
+                                <input class="peer sr-only" name="native_language" type="radio" value="ar" {% if
+                                    user.native_language=='ar' %}checked{% endif %} />
+                                <div
+                                    class="p-3 text-center rounded-lg border border-border-color bg-white peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary hover:border-slate-300 transition-all">
+                                    <span class="font-bold text-sm block">العربية</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <label class="text-sm font-semibold text-text-main">{{ translations.target_cefr_level }}</label>
+                        <div class="grid grid-cols-3 sm:grid-cols-6 gap-3">
+                            <label class="cursor-pointer group relative">
+                                <input class="peer sr-only" name="cefr_level" type="radio" value="A1" {% if
+                                    user.german_level=='A1' %}checked{% endif %} />
+                                <div
+                                    class="p-2 text-center rounded-lg border border-border-color bg-white peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary hover:border-slate-300 transition-all">
+                                    <span class="font-bold text-sm block">A1</span>
+                                    <span class="text-[10px] opacity-70 block font-medium">Beginner</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer group relative">
+                                <input class="peer sr-only" name="cefr_level" type="radio" value="A2" {% if
+                                    user.german_level=='A2' %}checked{% endif %} />
+                                <div
+                                    class="p-2 text-center rounded-lg border border-border-color bg-white peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary hover:border-slate-300 transition-all">
+                                    <span class="font-bold text-sm block">A2</span>
+                                    <span class="text-[10px] opacity-70 block font-medium">Elementary</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer group relative">
+                                <input class="peer sr-only" name="cefr_level" type="radio" value="B1" {% if
+                                    user.german_level=='B1' %}checked{% endif %} />
+                                <div
+                                    class="p-2 text-center rounded-lg border border-border-color bg-white peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary hover:border-slate-300 transition-all">
+                                    <span class="font-bold text-sm block">B1</span>
+                                    <span class="text-[10px] opacity-70 block font-medium">Intermediate</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer group relative">
+                                <input class="peer sr-only" name="cefr_level" type="radio" value="B2" {% if
+                                    user.german_level=='B2' %}checked{% endif %} />
+                                <div
+                                    class="p-2 text-center rounded-lg border border-border-color bg-white peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary hover:border-slate-300 transition-all">
+                                    <span class="font-bold text-sm block">B2</span>
+                                    <span class="text-[10px] opacity-70 block font-medium">Upper Int.</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer group relative">
+                                <input class="peer sr-only" name="cefr_level" type="radio" value="C1" {% if
+                                    user.german_level=='C1' %}checked{% endif %} />
+                                <div
+                                    class="p-2 text-center rounded-lg border border-border-color bg-white peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary hover:border-slate-300 transition-all">
+                                    <span class="font-bold text-sm block">C1</span>
+                                    <span class="text-[10px] opacity-70 block font-medium">Advanced</span>
+                                </div>
+                            </label>
+                            <label class="cursor-pointer group relative">
+                                <input class="peer sr-only" name="cefr_level" type="radio" value="C2" {% if
+                                    user.german_level=='C2' %}checked{% endif %} />
+                                <div
+                                    class="p-2 text-center rounded-lg border border-border-color bg-white peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary hover:border-slate-300 transition-all">
+                                    <span class="font-bold text-sm block">C2</span>
+                                    <span class="text-[10px] opacity-70 block font-medium">Mastery</span>
+                                </div>
+                            </label>
                         </div>
                     </div>
                 </div>
-                <div class="p-6 lg:p-8 bg-slate-50/50 flex flex-col sm:flex-row items-center justify-end gap-4">
-                    <div class="flex gap-3 w-full sm:w-auto">
-                        <button
-                            class="flex-1 sm:flex-none px-6 py-2.5 rounded-lg text-slate-600 hover:bg-white hover:shadow-sm border border-transparent hover:border-slate-200 font-semibold text-sm transition-all">
-                            Cancel
-                        </button>
-                        <button
-                            class="flex-1 sm:flex-none px-6 py-2.5 rounded-lg bg-primary hover:bg-primary-hover text-white font-semibold text-sm transition-all shadow-lg shadow-primary/20 active:translate-y-px"
-                            type="submit">
-                            {{ translations.save_changes }}
-                        </button>
-                    </div>
+            </div>
+            <div class="p-6 lg:p-8 bg-slate-50/50 flex flex-col sm:flex-row items-center justify-end gap-4">
+                <div class="flex gap-3 w-full sm:w-auto">
+                    <button
+                        class="flex-1 sm:flex-none px-6 py-2.5 rounded-lg text-slate-600 hover:bg-white hover:shadow-sm border border-transparent hover:border-slate-200 font-semibold text-sm transition-all">
+                        Cancel
+                    </button>
+                    <button
+                        class="flex-1 sm:flex-none px-6 py-2.5 rounded-lg bg-primary hover:bg-primary-hover text-white font-semibold text-sm transition-all shadow-lg shadow-primary/20 active:translate-y-px"
+                        type="submit">
+                        {{ translations.save_changes }}
+                    </button>
                 </div>
+            </div>
             </div>
         </form>
     </main>

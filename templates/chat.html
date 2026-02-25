@@ -48,11 +48,31 @@
         #mobile-sidebar {
             transition: transform 0.3s ease;
         }
-        {% if lang_dir == 'rtl' %}
-        body { font-weight: 600 !important; }
-        h1, h2, h3, h4, h5, h6 { font-weight: 700 !important; }
-        .font-bold { font-weight: 800 !important; }
-        {% endif %}
+
+            {
+            % if lang_dir=='rtl' %
+        }
+
+        body {
+            font-weight: 100 !important;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-weight: 700 !important;
+        }
+
+        .font-bold {
+            font-weight: 800 !important;
+        }
+
+            {
+            % endif %
+        }
     </style>
 </head>
 
@@ -77,15 +97,20 @@
         </div>
         <nav class="flex flex-col gap-1 p-4 flex-1">
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-subtle-text hover:text-slate-900 hover:bg-slate-50"
-                href="/dashboard"><span class="material-symbols-outlined text-[20px]">dashboard</span> {{ translations.dashboard }}</a>
+                href="/dashboard"><span class="material-symbols-outlined text-[20px]">dashboard</span> {{
+                translations.dashboard }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-primary bg-red-50"
-                href="/chat"><span class="material-symbols-outlined text-[20px]">forum</span> {{ translations.chat }}</a>
+                href="/chat"><span class="material-symbols-outlined text-[20px]">forum</span> {{ translations.chat
+                }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-subtle-text hover:text-slate-900 hover:bg-slate-50"
-                href="/practice"><span class="material-symbols-outlined text-[20px]">psychology</span> {{ translations.practice }}</a>
+                href="/practice"><span class="material-symbols-outlined text-[20px]">psychology</span> {{
+                translations.practice }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-subtle-text hover:text-slate-900 hover:bg-slate-50"
-                href="/vocabulary"><span class="material-symbols-outlined text-[20px]">menu_book</span> {{ translations.vocabulary }}</a>
+                href="/vocabulary"><span class="material-symbols-outlined text-[20px]">menu_book</span> {{
+                translations.vocabulary }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-subtle-text hover:text-slate-900 hover:bg-slate-50"
-                href="/setting"><span class="material-symbols-outlined text-[20px]">manage_accounts</span> {{ translations.profile }}</a>
+                href="/setting"><span class="material-symbols-outlined text-[20px]">manage_accounts</span> {{
+                translations.profile }}</a>
         </nav>
         <a href="/logout"
             class="flex items-center gap-3 px-8 py-5 border-t border-border-light text-sm font-medium text-red-500"><span
@@ -205,6 +230,8 @@
         <header
             class="px-6 py-4 border-b border-border-light bg-white/80 backdrop-blur-md z-10 flex items-center justify-between shrink-0">
             <div class="flex flex-col justify-center">
+                <h1 class="text-white text-lg font-bold tracking-tight">{% if user.target_language == 'de' %}{{
+                    translations.master_lang_de }}{% else %}{{ translations.master_lang_en }}{% endif %}</h1>
                 <h2 class="text-lg font-bold leading-tight flex items-center gap-2 text-slate-900">
                     <div class="p-1.5 bg-red-50 rounded-lg">
                         <span id="topic-icon"
@@ -212,8 +239,8 @@
                     </div>
                     <span id="display-topic">Choose a topic</span>
                 </h2>
-                <p class="text-subtle-text text-xs font-normal ml-11">Level {{ user.german_level }} • Speaking Practice
-                </p>
+                <p class="text-subtle-text text-xs font-normal ml-11">{{ translations.learning_level_label }} {{
+                    user.german_level }} • {{ translations.speaking_practice }}</p>
             </div>
             <div class="hidden sm:flex flex-col items-end w-48 gap-1.5">
                 <div class="flex justify-between w-full text-xs font-medium text-slate-500">
@@ -234,8 +261,8 @@
                     <span class="material-symbols-outlined text-primary text-5xl">forum</span>
                 </div>
                 <h3 class="text-xl font-bold text-slate-900">{{ translations.start_conversation }}</h3>
-                <p class="text-subtle-text max-w-sm">{{ translations.practice_german }}
-                    topic with you!</p>
+                <p class="text-slate-400 text-sm max-w-[280px]">{% if user.target_language == 'de' %}{{
+                    translations.practice_lang_de }}{% else %}{{ translations.practice_lang_en }}{% endif %}</p>
                 <div class="flex flex-wrap justify-center gap-2 mt-2">
                     <button
                         class="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold hover:border-primary hover:text-primary hover:shadow-sm transition-all flex items-center gap-2"
@@ -260,8 +287,9 @@
                             class="absolute inset-0 rounded-xl bg-primary/20 scale-0 group-hover:scale-100 transition-transform"></span>
                     </button>
                     <input id="chat-input"
-                        class="flex-1 min-w-0 bg-transparent border-none text-slate-800 placeholder-slate-400 focus:ring-0 text-base py-3"
-                        placeholder="{{ translations.type_message }}" type="text" />
+                        class="w-full bg-transparent border-0 focus:ring-0 p-0 text-sm text-slate-700 placeholder:text-slate-500"
+                        placeholder="{% if user.target_language == 'de' %}{{ translations.type_message_de }}{% else %}{{ translations.type_message_en }}{% endif %}"
+                        type="text" />
                     <button id="send-btn"
                         class="bg-primary hover:bg-primary-hover text-white rounded-xl py-2.5 px-4 font-medium transition-colors flex items-center gap-2 shadow-lg shadow-primary/20 flex-shrink-0 whitespace-nowrap">
                         <span>{{ translations.send }}</span>
@@ -304,7 +332,7 @@
 
         if (SpeechRecognition) {
             recognition = new SpeechRecognition();
-            recognition.lang = 'de-DE';
+            recognition.lang = '{% if user.target_language == "de" %}de-DE{% else %}en-US{% endif %}';
             recognition.continuous = false;
             recognition.interimResults = false;
             recognition.onstart = () => {

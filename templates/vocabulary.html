@@ -58,19 +58,25 @@
             <div
                 class="size-9 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold">
                 {{ user.german_level }}</div>
-            <p class="text-sm font-bold text-text-main">{{ user.german_level }} Level</p>
+            <p class="text-sm font-bold text-text-main">{{ user.german_level }} {{ translations.learning_level_label }}
+            </p>
         </div>
         <nav class="flex flex-col gap-1 p-4 flex-1">
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/dashboard"><span class="material-symbols-outlined text-[20px]">dashboard</span> {{ translations.dashboard }}</a>
+                href="/dashboard"><span class="material-symbols-outlined text-[20px]">dashboard</span> {{
+                translations.dashboard }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/chat"><span class="material-symbols-outlined text-[20px]">forum</span> {{ translations.chat }}</a>
+                href="/chat"><span class="material-symbols-outlined text-[20px]">forum</span> {{ translations.chat
+                }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/practice"><span class="material-symbols-outlined text-[20px]">psychology</span> {{ translations.practice }}</a>
+                href="/practice"><span class="material-symbols-outlined text-[20px]">psychology</span> {{
+                translations.practice }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-primary bg-red-50"
-                href="/vocabulary"><span class="material-symbols-outlined text-[20px]">menu_book</span> {{ translations.vocabulary }}</a>
+                href="/vocabulary"><span class="material-symbols-outlined text-[20px]">menu_book</span> {{
+                translations.vocabulary }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/setting"><span class="material-symbols-outlined text-[20px]">manage_accounts</span> {{ translations.profile }}</a>
+                href="/setting"><span class="material-symbols-outlined text-[20px]">manage_accounts</span> {{
+                translations.profile }}</a>
         </nav>
         <a href="/logout"
             class="flex items-center gap-3 px-8 py-5 border-t border-border-color text-sm font-medium text-red-500"><span
@@ -108,7 +114,7 @@
                 <div
                     class="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-full border border-border-color bg-white text-primary text-xs font-bold shadow-sm">
                     <span class="size-2 rounded-full bg-primary animate-pulse"></span>
-                    {{ user.german_level }}
+                    {{ translations.learning_level_label }} {{ user.german_level }}
                 </div>
                 <button onclick="openSidebar()"
                     class="md:hidden p-2 rounded-lg text-text-secondary hover:text-text-main hover:bg-slate-100">
@@ -127,7 +133,8 @@
                         <span class="material-symbols-outlined text-[14px]">chevron_right</span>
                         <span>Vocabulary</span>
                     </div>
-                    <h1 class="text-2xl lg:text-3xl font-bold tracking-tight text-text-main">{{ translations.my_vocabulary }}</h1>
+                    <h1 class="text-2xl lg:text-3xl font-bold tracking-tight text-text-main">{{
+                        translations.my_vocabulary }}</h1>
                     <p class="text-slate-500 text-sm mt-1">Words you've improved during your writing practice sessions.
                     </p>
                 </div>

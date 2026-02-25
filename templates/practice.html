@@ -60,19 +60,25 @@
             <div
                 class="size-9 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold">
                 {{ user.german_level }}</div>
-            <p class="text-sm font-bold text-text-main">{{ user.german_level }} Level</p>
+            <p class="text-sm font-bold text-text-main">{{ user.german_level }} {{ translations.learning_level_label }}
+            </p>
         </div>
         <nav class="flex flex-col gap-1 p-4 flex-1">
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/dashboard"><span class="material-symbols-outlined text-[20px]">dashboard</span> {{ translations.dashboard }}</a>
+                href="/dashboard"><span class="material-symbols-outlined text-[20px]">dashboard</span> {{
+                translations.dashboard }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/chat"><span class="material-symbols-outlined text-[20px]">forum</span> {{ translations.chat }}</a>
+                href="/chat"><span class="material-symbols-outlined text-[20px]">forum</span> {{ translations.chat
+                }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-primary bg-red-50"
-                href="/practice"><span class="material-symbols-outlined text-[20px]">psychology</span> {{ translations.practice }}</a>
+                href="/practice"><span class="material-symbols-outlined text-[20px]">psychology</span> {{
+                translations.practice }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/vocabulary"><span class="material-symbols-outlined text-[20px]">menu_book</span> {{ translations.vocabulary }}</a>
+                href="/vocabulary"><span class="material-symbols-outlined text-[20px]">menu_book</span> {{
+                translations.vocabulary }}</a>
             <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-text-secondary hover:text-text-main hover:bg-slate-50"
-                href="/setting"><span class="material-symbols-outlined text-[20px]">manage_accounts</span> {{ translations.profile }}</a>
+                href="/setting"><span class="material-symbols-outlined text-[20px]">manage_accounts</span> {{
+                translations.profile }}</a>
         </nav>
         <a href="/logout"
             class="flex items-center gap-3 px-8 py-5 border-t border-border-color text-sm font-medium text-red-500"><span
@@ -97,7 +103,8 @@
                     href="/dashboard">{{ translations.dashboard }}</a>
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                     href="/chat">{{ translations.chat }}</a>
-                <a class="text-primary bg-red-50 px-4 py-2 rounded-lg text-sm font-bold" href="/practice">{{ translations.practice }}</a>
+                <a class="text-primary bg-red-50 px-4 py-2 rounded-lg text-sm font-bold" href="/practice">{{
+                    translations.practice }}</a>
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                     href="/vocabulary">{{ translations.vocabulary }}</a>
                 <a class="text-text-secondary hover:text-text-main hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
@@ -109,7 +116,7 @@
                 <div
                     class="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-full border border-border-color bg-white text-primary text-xs font-bold shadow-sm">
                     <span class="size-2 rounded-full bg-primary animate-pulse"></span>
-                    {{ user.german_level }}
+                    {{ translations.learning_level_label }} {{ user.german_level }}
                 </div>
                 <button onclick="openSidebar()"
                     class="md:hidden p-2 rounded-lg text-text-secondary hover:text-text-main hover:bg-slate-100">
@@ -148,8 +155,8 @@
                     </div>
                     <h3 class="text-lg font-semibold text-text-main">Instructions</h3>
                     <p class="text-slate-600 leading-relaxed max-w-3xl">
-                        Write a text in German. DeutschAI will analyze your grammar, suggest improvements, and evaluate
-                        your vocabulary level.
+                        {% if user.target_language == 'de' %}{{ translations.instructions_de }}{% else %}{{
+                        translations.instructions_en }}{% endif %}
                     </p>
                 </div>
                 <span
@@ -161,6 +168,7 @@
                 <div
                     class="flex flex-wrap items-center justify-between gap-2 border-b border-border-color px-4 py-3 bg-white">
                     <div class="flex items-center gap-1 text-slate-500">
+                        {% if user.target_language == 'de' %}
                         <div class="flex items-center gap-1">
                             <button onclick="insertChar('ä')"
                                 class="size-8 flex items-center justify-center rounded hover:bg-slate-100 hover:text-text-main font-medium transition-colors text-sm">ä</button>
@@ -171,6 +179,7 @@
                             <button onclick="insertChar('ß')"
                                 class="size-8 flex items-center justify-center rounded hover:bg-slate-100 hover:text-text-main font-medium transition-colors text-sm">ß</button>
                         </div>
+                        {% endif %}
                     </div>
                     <span id="saved-status" class="text-xs text-slate-400 font-medium flex items-center gap-1">
                         <span class="material-symbols-outlined text-[14px]">cloud_done</span> Saved
@@ -179,7 +188,7 @@
                 <div class="relative flex-1 p-6 lg:p-8">
                     <textarea id="practice-input"
                         class="w-full h-full bg-transparent border-0 focus:ring-0 p-0 text-lg leading-relaxed text-slate-800 resize-none font-display placeholder:text-slate-300 outline-none min-h-[300px]"
-                        placeholder="{{ translations.write_text_placeholder }}"></textarea>
+                        placeholder="{% if user.target_language == 'de' %}{{ translations.write_text_placeholder_de }}{% else %}{{ translations.write_text_placeholder_en }}{% endif %}"></textarea>
                 </div>
                 <div class="flex items-center justify-between px-6 py-4 border-t border-border-color bg-slate-50/50">
                     <div id="word-count" class="text-sm font-medium text-text-secondary">0 words</div>

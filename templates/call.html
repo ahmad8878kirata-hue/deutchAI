@@ -123,11 +123,31 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: 2px;
         }
-        {% if lang_dir == 'rtl' %}
-        body { font-weight: 600 !important; }
-        h1, h2, h3, h4, h5, h6 { font-weight: 700 !important; }
-        .font-bold { font-weight: 800 !important; }
-        {% endif %}
+
+            {
+            % if lang_dir=='rtl' %
+        }
+
+        body {
+            font-weight: 600 !important;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-weight: 700 !important;
+        }
+
+        .font-bold {
+            font-weight: 800 !important;
+        }
+
+            {
+            % endif %
+        }
     </style>
 </head>
 
@@ -165,7 +185,8 @@
             <h1 class="text-white text-2xl font-extrabold tracking-tight">{{ translations.ahmad_tech }}</h1>
             <div id="status-label" class="flex items-center gap-1.5 mt-1">
                 <span class="size-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <p class="text-emerald-400 text-xs font-bold">Starting...</p>
+                <p class="text-emerald-400 text-xs font-bold">{{ translations.learning_level_label }} {{
+                    user.german_level }}</p>
             </div>
         </div>
 
@@ -246,7 +267,7 @@
                 return;
             }
             recognition = new SpeechRecognition();
-            recognition.lang = 'de-DE';
+            recognition.lang = '{% if user.target_language == "de" %}de-DE{% else %}en-US{% endif %}';
             recognition.continuous = false;
             recognition.interimResults = true;
             recognition.maxAlternatives = 1;
@@ -314,7 +335,7 @@
             setStatus('thinking', '{{ translations.ahmad_thinking }}');
             conversationHistory.push({ role: 'user', content: userText });
             try {
-const res = await fetch('/call/api', {
+                const res = await fetch('/call/api', {
                     method: 'POST',
                     credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
@@ -322,7 +343,7 @@ const res = await fetch('/call/api', {
                 });
                 if (res.status === 401) { window.location.href = '/login'; return; }
                 const data = await res.json();
-                const ai = data?.choices?.[0]?.message?.content || 'Entschuldigung, kannst du das wiederholen?';
+                const ai = data?.choices?.[0]?.message?.content || (document.documentElement.lang === 'ar' ? 'عذراً، هل يمكنك التكرار؟' : 'Sorry, could you repeat that?');
                 conversationHistory.push({ role: 'assistant', content: ai });
                 addMessage('ai', ai);
                 speakText(ai);
@@ -341,10 +362,13 @@ const res = await fetch('/call/api', {
             window.speechSynthesis.cancel();
             if (!isSpeakerOn) { isAISpeaking = false; setStatus('listening', 'Listening...'); restartListening(); return; }
             const utt = new SpeechSynthesisUtterance(text);
-            utt.lang = 'de-DE'; utt.rate = 0.95; utt.pitch = 1.05;
+            const targetLang = '{% if user.target_language == "de" %}de{% else %}en{% endif %}';
+            utt.lang = targetLang === 'de' ? 'de-DE' : 'en-US';
+            utt.rate = 0.95; utt.pitch = 1.05;
             const voices = window.speechSynthesis.getVoices();
-            const de = voices.find(v => v.lang.startsWith('de'));
-            if (de) utt.voice = de;
+            const voice = voices.find(v => v.lang.startsWith(targetLang));
+            if (voice) utt.voice = voice;
+
             utt.onstart = () => { ripple.classList.remove('hidden'); soundwave.classList.remove('hidden'); setStatus('speaking', '{{ translations.ahmad_speaking }}'); };
             utt.onend = () => { ripple.classList.add('hidden'); soundwave.classList.add('hidden'); isAISpeaking = false; setStatus('listening', 'Listening...'); restartListening(); };
             utt.onerror = () => { ripple.classList.add('hidden'); soundwave.classList.add('hidden'); isAISpeaking = false; restartListening(); };
@@ -398,7 +422,7 @@ const res = await fetch('/call/api', {
         window.addEventListener('load', () => {
             initRecognition();
             setTimeout(() => {
-                const greeting = '{{ translations.ahmad_greeting }}';
+                const greeting = '{% if user.target_language == "de" %}{{ translations.ahmad_greeting_de }}{% else %}{{ translations.ahmad_greeting_en }}{% endif %}';
                 addMessage('ai', greeting);
                 speakText(greeting);
             }, 800);
